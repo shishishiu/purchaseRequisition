@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header">
+	<title>Web Page</title>
+</head>
+<body>
+
+	<script src="/js/purchase/edit.js"></script>
+	<div class="container">
+		<div th:replace="layout/loginInfo :: loginInfo"></div>
+
+
+        <form action="/purchase/edit" th:action="@{/purchase/edit}" method="post" id="editForm">
+
+        	<div>
+        		<i class="material-icons">navigate_before</i>
+				<div th:if="${userId==null}" style="display:inline">
+					<a href="javascript:void(0)" onclick="save()" title="save"><i class="material-icons">done_all</i></a>
+				</div>
+				<div th:unless="${userId==null}" style="display:inline">
+				<button type="submit" value="update" name="update" class="boton" >save</button>
+				</div>        	
+        	</div>
+        
+        	<div class="container">
+        	<table th:object="${purchase}" class="parent">
+        	
+        		<thead>
+        			<tr>
+        				<th>Id del Requisición</th>
+        				<th>Id del Solicitante</th>
+        				<th>Fecha Material Solicitado</th>
+			            <th>Posible Fecha de Entrega</th>
+			            <th>Nacional o Importado</th>
+			            <th>Compañía</th>
+        			</tr>
+					<tr>
+						<td th:text="*{purchaseId}"></td>
+						<td th:text="*{userId} + ' ' + *{username}"></td>
+						<td><input type="text" id="applicatedAt" name="applicatedAt" placeholder="dd-mm-yyyy"  th:field="*{applicatedAt}" th:errorclass="error-field"/></td>
+						<td><input type="text" id="deliveryDate" name="deliveryDate" placeholder="dd-mm-yyyy"  th:field="*{deliveryDate}" th:errorclass="error-field"/></td>
+						<td><input type="text" name="isDomestic" list="isDomestic" placeholder="elige de la lista" th:field="*{isDomesticValue}"/>
+						<datalist id="isDomestic">
+							<option th:each="isDomestic : ${isDomesticList}" th:value="${isDomestic.code}" th:text="${isDomestic.value}"></option>
+						</datalist>
+						</td>
+						<td><input type="text" name="company" list="company" placeholder="elige de la lista" th:field="*{companyValue}"/>
+						<datalist id="company">
+							<option th:each="company : ${companyList}" th:value="${company.code}" th:text="${company.value}"></option>
+						</datalist>
+						</td>
+					</tr>
+        		</thead>
+        	
+        	</table>
+        	</div>
+        	<div class="container">
+        	<table>       	
+        		<thead>
+        			<tr>
+        				<th>No</th>
+        				<th>Cantidad</th>
+        				<th>Unidad</th>
+			            <th>Product Name</th>
+			            <th>Brand</th>
+			            <th>Nota</th>
+			            <th>Unit Price</th>
+			            <th>Total Price</th>
+			            <th>Currency</th>
+        			</tr>
+					<tr th:each="item,iterStat : ${itemList}" >
+						<td th:text="${item.purchaseItemId}"></td>
+	              		<td th:text="${item.quantity}"></td>
+	              		<td th:text="${item.unit}"></td>
+	              		<td th:text="${item.productName}"></td>
+	              		<td th:text="${item.brand}"></td>
+	              		<td th:text="${item.note}"></td>
+	              		<td th:text="${item.unitPrice}"></td>
+	              		<td th:text="${item.totalPrice}"></td>
+	              		<td th:text="${item.currency}"></td>
+					</tr>
+				</thead>
+			</table>
+        	</div>
+        </form>
+
+	</div>
+
+  	<div th:include="layout/footer :: copy" th:fragment="containerFooter"></div>
+
+</body>
+</html>

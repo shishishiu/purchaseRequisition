@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header">
+	<title>Web Page</title>
+</head>
+<body>
+
+	<script src="/js/purchase/search.js"></script>
+	<div class="container">
+		<div th:replace="layout/loginInfo :: loginInfo"></div>
+
+
+		<h2>Buscar Requisición de Compra</h2>
+
+        <form action="/purchase/search" th:action="@{/purchase/search}" method="post" id="searchForm">
+          <div>
+            Id de Solicitante: <input type="text" name="userId" id="userId" th:value="${userId}"/>
+			&nbsp;Fecha de Material Solicitado:  <input type="text" name="applicatedAt" id="applicatedAt" th:value="${applicatedAt}"/>
+			&nbsp;Posible Fecha de Entrega:  <input type="text" name="deliveryDate" id="deliveryDate" th:value="${deliveryDate}"/>
+            <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
+            &nbsp;<a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a>
+         </div>
+        </form>
+
+	
+		<div class="row">
+	        <table class="table">
+	          <thead>
+	            <tr>
+		          <th>No</th>
+	              <th>Nombre de Solicitante</th>
+	              <th>Fecha Material Solicitado</th>
+	              <th>Posible Fecha de Entrega</th>
+	              <th>Nacional o Importado</th>
+	              <th>Compañía</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	            <tr th:each="item,iterStat : ${list}" 
+	            th:with="rowcolor =(${item.isNearDeliveryDate == true} ? 'background-color: #f64941' : '')"
+	            th:style="${rowcolor}">
+	              <td><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${item.purchaseId}">1</a></td>
+	              <td th:text="${item.member}? ${item.userId} + ' ' + ${item.member.username}: ${item.userId}"></td>
+	              <td th:text="${item.applicatedAt}"></td>
+	              <td th:text="${item.deliveryDate}"></td>
+	              <td th:text="${item.isDomesticValue}"></td>
+	              <td th:text="${item.companyValue}"></td>
+	              
+	            </tr>
+	          </tbody>
+	        </table>
+		</div>
+	</div>
+
+  	<div th:include="layout/footer :: copy" th:fragment="containerFooter"></div>
+
+</body>
+</html>
