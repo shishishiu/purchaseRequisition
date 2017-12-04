@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header">
+	<title>Web Page</title>
+</head>
+<body>
+
+	<script src="/js/purchase/editHeader.js"></script>
+	<div class="container">
+		<div th:replace="layout/loginInfo :: loginInfo"></div>
+
+
+        <form action="/purchase/saveHeader" th:action="@{/purchase/saveHeader}" method="post" id="editHeaderForm" th:object="${purchase}">
+
+        	<div>
+        		<i class="material-icons">navigate_before</i>
+				<div th:if="${userId==null}" style="display:inline">
+					<a href="javascript:void(0)" onclick="save()" title="save"><i class="material-icons">done_all</i></a>
+				</div>
+        	</div>
+        
+        	<div class="container">
+        	<table class="parent">
+        	
+        		<thead>
+        			<tr>
+        				<th>Id del Requisición</th>
+        				<th>Id del Solicitante</th>
+        				<th>Fecha Material Solicitado</th>
+			            <th>Posible Fecha de Entrega</th>
+			            <th>Nacional o Importado</th>
+			            <th>Compañía</th>
+        			</tr>
+					<tr>
+						<td th:text="*{purchaseId}"></td>
+						<td th:text="*{userId} + ' ' + *{username}"></td>
+						<td><input type="text" id="applicatedAt" name="applicatedAt" placeholder="dd-mm-yyyy"  th:field="*{applicatedAt}" th:errorclass="error-field"/></td>
+						<td><input type="text" id="deliveryDate" name="deliveryDate" placeholder="dd-mm-yyyy"  th:field="*{deliveryDate}" th:errorclass="error-field"/></td>
+						<td><input type="text" name="isDomestic" list="isDomestic" placeholder="elige de la lista" th:field="*{isDomesticValue}"/>
+						<datalist id="isDomestic">
+							<option th:each="isDomestic : ${isDomesticList}" th:value="${isDomestic.code}" th:text="${isDomestic.value}"></option>
+						</datalist>
+						</td>
+						<td><input type="text" name="company" list="company" placeholder="elige de la lista" th:field="*{companyValue}"/>
+						<datalist id="company">
+							<option th:each="company : ${companyList}" th:value="${company.code}" th:text="${company.value}"></option>
+						</datalist>
+						</td>
+					</tr>
+        		</thead>
+        	
+        	</table>
+        	</div>
+        	
+        	<input type="hidden" name="userId" th:field="*{userId}"/>
+        	<input type="hidden" name="purchaseId" th:field="*{purchaseId}"/>
+        </form>
+
+	</div>
+
+  	<div th:include="layout/footer :: copy" th:fragment="containerFooter"></div>
+
+</body>
+</html>

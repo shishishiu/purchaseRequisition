@@ -2,13 +2,11 @@ package com.osg.purchase.form;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.osg.purchase.entity.PurchaseEntity.IsDomesticValue;
 
-public class PurchaseEditForm implements Serializable{
+public class PurchaseHeaderEditForm implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

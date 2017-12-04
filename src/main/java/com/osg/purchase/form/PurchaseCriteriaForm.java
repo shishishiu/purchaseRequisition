@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PurchaseCriteria implements Serializable{
+public class PurchaseCriteriaForm implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

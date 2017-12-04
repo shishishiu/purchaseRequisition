@@ -13,12 +13,13 @@
 
 		<h2>Buscar Requisición de Compra</h2>
 
-        <form action="/purchase/search" th:action="@{/purchase/search}" method="post" id="searchForm">
+        <form action="/purchase/search" th:action="@{/purchase/search}" method="post" id="searchForm" th:object="${purchaseCriteriaForm}">
           <div>
-            Id de Solicitante: <input type="text" name="userId" id="userId" th:value="${userId}"/>
-			&nbsp;Fecha de Material Solicitado:  <input type="text" name="applicatedAt" id="applicatedAt" th:value="${applicatedAt}"/>
-			&nbsp;Posible Fecha de Entrega:  <input type="text" name="deliveryDate" id="deliveryDate" th:value="${deliveryDate}"/>
+            Id de Solicitante: <input type="text" name="userId" id="userId" th:value="*{userId}" class="condition"/>
+			&nbsp;Fecha de Material Solicitado:  <input type="text" name="applicatedAt" id="applicatedAt" th:value="*{applicatedAt}" class="condition"/>
+			&nbsp;Posible Fecha de Entrega:  <input type="text" name="deliveryDate" id="deliveryDate" th:value="*{deliveryDate}" class="condition"/>
             <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
+            &nbsp;<a href="javascript:void(0)" onclick="clearCondition()" th:title="clear"><i class="material-icons">clear</i></a>
             &nbsp;<a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a>
          </div>
         </form>

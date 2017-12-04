@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.osg.purchase.entity.PurchaseEntity;
-import com.osg.purchase.form.PurchaseCriteria;
+import com.osg.purchase.form.PurchaseCriteriaForm;
 
 public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
 
@@ -19,7 +19,7 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
     EntityManager entityManager;
 
 
-	public List<PurchaseEntity> findPurchases(PurchaseCriteria criteria) {
+	public List<PurchaseEntity> findPurchases(PurchaseCriteriaForm criteria) {
 
         final List<String> andConditions = new ArrayList<String>();
         final Map<String, String> bindParameters = new HashMap<String, String>();

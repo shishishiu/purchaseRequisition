@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import com.osg.purchase.form.PurchaseCriteria;
+import com.osg.purchase.form.PurchaseCriteriaForm;
 import com.osg.purchase.util.DateUtil;
 
 @Entity(name = "table_purchases")
@@ -121,34 +121,52 @@ public class PurchaseEntity implements Serializable {
     private Timestamp updatedAt;
 
     @Transient
-    private PurchaseCriteria purchaseCriteria;
+    private PurchaseCriteriaForm purchaseCriteria;
 
 
+   public void setId(int id) {
+	   this.id = id;
+   }
     public int getId()
    {
        return this.id;
    }
 
+   public void setPurchaseId(String purchaseId) {
+       this.purchaseId = purchaseId;
+   }
     public String getPurchaseId()
    {
        return this.purchaseId;
    }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
     public String getUserId()
    {
        return this.userId;
    }
 
+	public void setApplicatedAt(String applicatedAt) {
+        this.applicatedAt = applicatedAt;
+    }
     public String getApplicatedAt()
    {
        return this.applicatedAt;
    }
 
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
     public String getDeliveryDate()
    {
        return this.deliveryDate;
    }
 
+    public void setIsDomestic(int isDomestic) {
+        this.isDomestic = isDomestic;
+    }
     public int getIsDomestic()
    {
        return this.isDomestic;
@@ -160,6 +178,9 @@ public class PurchaseEntity implements Serializable {
     	else return null;
    }
 
+    public void setCompany(int company) {
+        this.company = company;
+    }
     public int getCompany()
    {
        return this.company;
@@ -181,11 +202,17 @@ public class PurchaseEntity implements Serializable {
        return this.isDeleted;
    }
 
+   public void setCreatedAt(Timestamp createdAt) {
+       this.createdAt = createdAt;
+   }
    public Timestamp getCreatedAt()
   {
       return this.createdAt;
   }
 
+   public void setUpdatedAt(Timestamp updatedAt) {
+       this.updatedAt = updatedAt;
+   }
    public Timestamp getUpdatedAt()
   {
       return this.updatedAt;
@@ -206,11 +233,11 @@ public class PurchaseEntity implements Serializable {
 		this.purchaseItemList = purchaseItemList;
 	}
 
-	public PurchaseCriteria getCriteria()
+	public PurchaseCriteriaForm getCriteria()
    {
        return this.purchaseCriteria;
    }
-	public void setCriteria(PurchaseCriteria purchaseCriteria) {
+	public void setCriteria(PurchaseCriteriaForm purchaseCriteria) {
 		this.purchaseCriteria = purchaseCriteria;
 	}
 
