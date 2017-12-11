@@ -2,7 +2,7 @@ package com.osg.purchase.util;
 
 import java.util.Date;
 
-public class DateUtil {
+public class DateUtils {
 	
 	static public long SubtractDates(Date from, Date to) {
 		

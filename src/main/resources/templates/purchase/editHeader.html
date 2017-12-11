@@ -11,7 +11,7 @@
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
 
-        <form action="/purchase/saveHeader" th:action="@{/purchase/saveHeader}" method="post" id="editHeaderForm" th:object="${purchase}">
+        <form action="/purchase/saveHeader" th:action="@{/purchase/saveHeader}" method="post" id="editHeaderForm" th:object="${form}">
 
         	<div>
         		<i class="material-icons">navigate_before</i>
@@ -21,6 +21,13 @@
         	</div>
         
         	<div class="container">
+        	
+        		<ul>
+			        <li th:each="error : ${#fields.detailedErrors()}">
+			            <span th:text="${error.message}">Error message</span>
+			        </li>
+			    </ul>
+        	
         	<table class="parent">
         	
         		<thead>
@@ -35,17 +42,24 @@
 					<tr>
 						<td th:text="*{purchaseId}"></td>
 						<td th:text="*{userId} + ' ' + *{username}"></td>
-						<td><input type="text" id="applicatedAt" name="applicatedAt" placeholder="dd-mm-yyyy"  th:field="*{applicatedAt}" th:errorclass="error-field"/></td>
-						<td><input type="text" id="deliveryDate" name="deliveryDate" placeholder="dd-mm-yyyy"  th:field="*{deliveryDate}" th:errorclass="error-field"/></td>
-						<td><input type="text" name="isDomestic" list="isDomestic" placeholder="elige de la lista" th:field="*{isDomesticValue}"/>
-						<datalist id="isDomestic">
-							<option th:each="isDomestic : ${isDomesticList}" th:value="${isDomestic.code}" th:text="${isDomestic.value}"></option>
-						</datalist>
+						<td>
+							<input type="text" id="applicatedAt" name="applicatedAt" placeholder="dd-mm-yyyy" th:field="*{applicatedAt}" th:errorclass="errorField"/>
 						</td>
-						<td><input type="text" name="company" list="company" placeholder="elige de la lista" th:field="*{companyValue}"/>
-						<datalist id="company">
-							<option th:each="company : ${companyList}" th:value="${company.code}" th:text="${company.value}"></option>
-						</datalist>
+						<td>	
+							<input type="text" id="deliveryDate" name="deliveryDate" placeholder="dd-mm-yyyy" th:field="*{deliveryDate}" th:errorclass="errorField"/>
+						</td>
+						<td>
+							<select id="isDomestic" name="isDomestic" th:errorclass="errorField">
+				            	<option value="">---</option>
+				            	<option th:each="isDomestic : ${isDomesticList}" th:value="${isDomestic.code}" th:text="${isDomestic.value}" th:selected="${isDomestic.code} == *{isDomestic}">pulldown</option>
+				            </select>
+						</td>
+						<td>
+							<select id="company" name="company" th:errorclass="errorField">
+				            	<option value="">---</option>
+				            	<option th:each="company : ${companyList}" th:value="${company.code}" th:text="${company.value}" th:selected="${company.code} == *{company}">pulldown</option>
+				            </select>
+
 						</td>
 					</tr>
         		</thead>
@@ -54,6 +68,7 @@
         	</div>
         	
         	<input type="hidden" name="userId" th:field="*{userId}"/>
+        	<input type="hidden" name="username" th:field="*{username}"/>
         	<input type="hidden" name="purchaseId" th:field="*{purchaseId}"/>
         </form>
 

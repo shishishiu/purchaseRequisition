@@ -8,14 +8,14 @@
 
 	<section>
 		<form th:action="@{/login}" method="post">
-	    	<div class="bastidor">  
+	    	<div class="container">  
 	    	
 	    		<div  th:if="${param.error}" th:include="Layout/errorMessage :: errorMessage(#{err.msg.invalid.user.contrasena})">test</div>
 	    		<div th:if="${param.logout}" th:include="Layout/message :: message(#{msg.terminar_sesion})">test</div>
 	    	
 	
 	     		<p><strong><span th:text="#{common.texto.usuario}"></span></strong>
-	         		<input name="username" type="text" />
+	         		<input name="username" type="text" autofocus="autofocus"/>
 	         	</p>
 			    <p><strong><span th:text="#{common.texto.contrasena}"></span></strong>
 			    	<input name="password" type="password"/>

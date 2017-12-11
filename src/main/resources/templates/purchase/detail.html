@@ -11,7 +11,7 @@
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
 
-        <form action="/purchase/detail" th:action="@{/purchase/detail}" method="post" id="detailForm"  th:object="${purchase}">
+        <form action="/purchase/detail" th:action="@{/purchase/detail}" method="post" id="detailForm" th:object="${form}">
 
         	<div>
         		<a href="javascript:void(0)" onclick="back()" title="regresar">
@@ -21,12 +21,12 @@
         
         	<div class="container">
          	
-         	<div style="text-align: right" th:object="${purchase}">
-         		<a href="javascript:void(0)" th:href="@{/purchase/editHeader/{purchaseId}(purchaseId=*{purchaseId})}" title="modificar descripción general"><i class="material-icons">mode_edit</i></a>
+         	<div style="text-align: right">
+         		<a href="javascript:void(0)" th:href="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" title="modificar descripción general"><i class="material-icons">mode_edit</i></a>
          	</div>
          	
          	<div class="container"></div>
-        	<table th:object="${purchase}" class="parent">
+        	<table class="parent">
         		<thead>
         			<tr>
         				<th>Id del Requisición</th>

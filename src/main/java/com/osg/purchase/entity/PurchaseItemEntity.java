@@ -58,9 +58,14 @@ public class PurchaseItemEntity {
 
     @Column
     private Timestamp createdAt;
+    @Column
+    private String createdUserId;
 
     @Column
     private Timestamp updatedAt;
+
+    @Column
+    private String updatedUserId;
 
     
 
@@ -123,10 +128,27 @@ public class PurchaseItemEntity {
   {
       return this.createdAt;
   }
+   public void setCreatedUserId(String createdUserId) {
+       this.createdUserId = createdUserId;
+   }
+   public String getCreatedUserId()
+  {
+      return this.createdUserId;
+  }
 
+   public void setUpdatedAt(Timestamp updatedAt) {
+       this.updatedAt = updatedAt;
+   }
    public Timestamp getUpdatedAt()
   {
       return this.updatedAt;
+  }
+   public void setUpdatedUserId(String updatedUserId) {
+       this.updatedUserId = updatedUserId;
+   }
+   public String getUpdatedUserId()
+  {
+      return this.updatedUserId;
   }
    public PurchaseEntity getPurchase() {
 	   return this.purchaseEntity;

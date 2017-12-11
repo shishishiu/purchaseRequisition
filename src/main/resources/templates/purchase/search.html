@@ -15,7 +15,7 @@
 
         <form action="/purchase/search" th:action="@{/purchase/search}" method="post" id="searchForm" th:object="${purchaseCriteriaForm}">
           <div>
-            Id de Solicitante: <input type="text" name="userId" id="userId" th:value="*{userId}" class="condition"/>
+            Id de Solicitante: <input type="text" name="userId" id="userId" th:value="*{userId}" class="condition" autofocus="autofocus"/>
 			&nbsp;Fecha de Material Solicitado:  <input type="text" name="applicatedAt" id="applicatedAt" th:value="*{applicatedAt}" class="condition"/>
 			&nbsp;Posible Fecha de Entrega:  <input type="text" name="deliveryDate" id="deliveryDate" th:value="*{deliveryDate}" class="condition"/>
             <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
@@ -30,6 +30,7 @@
 	          <thead>
 	            <tr>
 		          <th>No</th>
+		          <th>Requisición No</th>
 	              <th>Nombre de Solicitante</th>
 	              <th>Fecha Material Solicitado</th>
 	              <th>Posible Fecha de Entrega</th>
@@ -39,14 +40,15 @@
 	          </thead>
 	          <tbody>
 	            <tr th:each="item,iterStat : ${list}" 
-	            th:with="rowcolor =(${item.isNearDeliveryDate == true} ? 'background-color: #f64941' : '')"
-	            th:style="${rowcolor}">
-	              <td><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${item.purchaseId}">1</a></td>
+	            th:with="rowcolor =(${item.isNearDeliveryDate == true} ? 'alert' : '')"
+	            th:class="${rowcolor}">
+	              <td class="textCenter"><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
+	              <td class="textCenter" th:text="${item.purchaseId}"></td>
 	              <td th:text="${item.member}? ${item.userId} + ' ' + ${item.member.username}: ${item.userId}"></td>
-	              <td th:text="${item.applicatedAt}"></td>
-	              <td th:text="${item.deliveryDate}"></td>
-	              <td th:text="${item.isDomesticValue}"></td>
-	              <td th:text="${item.companyValue}"></td>
+	              <td class="textCenter" th:text="${item.applicatedAt}"></td>
+	              <td class="textCenter" th:text="${item.deliveryDate}"></td>
+	              <td class="textCenter" th:text="${item.isDomesticValue}"></td>
+	              <td class="textCenter" th:text="${item.companyValue}"></td>
 	              
 	            </tr>
 	          </tbody>

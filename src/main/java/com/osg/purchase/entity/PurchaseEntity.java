@@ -17,8 +17,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.osg.purchase.entity.interf.EnumInterface;
 import com.osg.purchase.form.PurchaseCriteriaForm;
-import com.osg.purchase.util.DateUtil;
+import com.osg.purchase.util.DateUtils;
 
 @Entity(name = "table_purchases")
 @Table(name = "table_purchases")
@@ -35,7 +37,7 @@ public class PurchaseEntity implements Serializable {
 
 	@Transient
 	private final int DAYS_UNTIL_DELIVERY_DATE = 5;
-	public enum IsDomesticValue {
+	public enum IsDomesticValue implements EnumInterface {
 		NATIONAL(1, "National"),
 	    IMPORTADO(2, "Importado");
 
@@ -118,9 +120,15 @@ public class PurchaseEntity implements Serializable {
     private Timestamp createdAt;
 
     @Column
+    private String createdUserId;
+
+    @Column
     private Timestamp updatedAt;
 
-    @Transient
+    @Column
+    private String updatedUserId;
+
+   @Transient
     private PurchaseCriteriaForm purchaseCriteria;
 
 
@@ -209,6 +217,13 @@ public class PurchaseEntity implements Serializable {
   {
       return this.createdAt;
   }
+   public void setCreatedUserId(String createdUserId) {
+       this.createdUserId = createdUserId;
+   }
+   public String getCreatedUserId()
+  {
+      return this.createdUserId;
+  }
 
    public void setUpdatedAt(Timestamp updatedAt) {
        this.updatedAt = updatedAt;
@@ -217,6 +232,14 @@ public class PurchaseEntity implements Serializable {
   {
       return this.updatedAt;
   }
+   public void setUpdatedUserId(String updatedUserId) {
+       this.updatedUserId = updatedUserId;
+   }
+   public String getUpdatedUserId()
+  {
+      return this.updatedUserId;
+  }
+
    public MemberEntity getMember() {
    	return this.member;
 	}
@@ -253,7 +276,7 @@ public class PurchaseEntity implements Serializable {
 			e.printStackTrace();
 		}
 		
-		return DateUtil.SubtractDates(dateFrom, dateTo) <= DAYS_UNTIL_DELIVERY_DATE;
+		return DateUtils.SubtractDates(dateFrom, dateTo) <= DAYS_UNTIL_DELIVERY_DATE;
 				
 	}
 }

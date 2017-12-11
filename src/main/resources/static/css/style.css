@@ -71,10 +71,17 @@ tr:nth-child(even){background-color: #f2f2f2}
 th {
     background-color: #00559d;
     color: white;
+    text-align:center;
 }
 
+tr.alert{
+	background-color: #fa8c87;
+}
 
 table.parent th{background-color: #7FAACE; color:white;}
+
+td.textCenter{text-align:center}
+td.textLeft{text-align:left}
 
 div.row{
 	margin-top: 5px;
@@ -82,4 +89,7 @@ div.row{
 }
 .errMessage{
 	color:red;
+}
+.errorField {
+  background-color: #ff8080;
 }

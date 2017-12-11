@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 public class PurchaseHeaderEditForm implements Serializable{
 
@@ -12,22 +14,24 @@ public class PurchaseHeaderEditForm implements Serializable{
 
 	private String purchaseId;
 
-	@NotNull
-    @Size(min = 1, max = 255, message="{err.msg.size}")
+    @Size(min = 1, max = 255)
 	private String userId;
 
 	private String username;
 
-	@NotNull
+    @Size(min = 10, max = 10)
+//    @DateTimeFormat(pattern="MM/dd/yyyy")
 	private String applicatedAt;
 	
-	@NotNull
+    @Size(min = 10, max = 10)
 	private String deliveryDate;
 	
+	@NotNull
     private int isDomestic;
 
     private String isDomesticValue;
 
+	@NotNull
     private int company;
 
     private String companyValue;
