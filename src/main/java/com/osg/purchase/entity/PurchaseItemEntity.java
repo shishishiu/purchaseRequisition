@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,12 +21,32 @@ public class PurchaseItemEntity {
     private PurchaseEntity purchaseEntity;
 
 	
+	public enum Currency {
+	    MXP("MXP"),
+	    USD("USD"),
+		JPY("JPN");
+
+		private final String value;
+
+		Currency(String value)
+		{
+			this.value = value;
+		}	
+	    public String getValue() {
+	        return value;
+	    }
+
+	}
+
+    
+//	@Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private int id;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
     @Column(nullable = false, unique = false)
-    private String purchaseItemId;
+    private int purchaseItemId;
 
     @Column(nullable = false, unique = false)
     private String purchaseId;
@@ -57,11 +76,14 @@ public class PurchaseItemEntity {
     private String currency;
 
     @Column
+    private int isDeleted;
+
+    @Column(insertable = false)
     private Timestamp createdAt;
     @Column
     private String createdUserId;
 
-    @Column
+    @Column(insertable = false)
     private Timestamp updatedAt;
 
     @Column
@@ -69,62 +91,106 @@ public class PurchaseItemEntity {
 
     
 
-    public int getId()
-   {
-       return this.id;
-   }
+//    public int getId()
+//   {
+//       return this.id;
+//   }
+//    public void setId(int id) {
+// 	   this.id = id;
+//    }
 
-    public String getPurchaseItemId()
+    public int getPurchaseItemId()
    {
        return this.purchaseItemId;
    }
+    public void setPurchaseItemId(int purchaseItemId) {
+ 	   this.purchaseItemId = purchaseItemId;
+    }
 
     public String getPurchaseId()
    {
        return this.purchaseId;
    }
+    public void setPurchaseId(String purchaseId) {
+  	   this.purchaseId = purchaseId;
+     }
 
     public int getQuantity()
    {
        return this.quantity;
    }
+    public void setQuantity(int quantity) {
+   	   this.quantity = quantity;
+      }
 
     public String getUnit()
    {
        return this.unit;
    }
+    public void setUnit(String unit) {
+   	   this.unit = unit;
+      }
 
     public String getProductName()
    {
        return this.productName;
    }
+    public void setProductName(String productName) {
+    	   this.productName = productName;
+       }
 
     public String getBrand()
    {
        return this.brand;
    }
+    public void setBrand(String brand) {
+    	   this.brand = brand;
+       }
 
     public String getNote()
    {
        return this.note;
    }
+    public void setNote(String note) {
+ 	   this.note = note;
+    }
 
     public int getUnitPrice()
    {
        return this.unitPrice;
    }
+    public void setUnitPrice(int unitPrice) {
+  	   this.unitPrice = unitPrice;
+     }
 
     public int getTotalPrice()
    {
        return this.totalPrice;
    }
+    public void setTotalPrice(int totalPrice) {
+   	   this.totalPrice = totalPrice;
+      }
 
     public String getCurrency()
    {
        return this.currency;
    }
+    public void setCurrency(String currency) {
+  	   this.currency = currency;
+     }
 
-   public Timestamp getCreatedAt()
+    public int getIsDeleted()
+    {
+        return this.isDeleted;
+    }
+    public void setIsDeleted(int isDeleted) {
+   	   this.isDeleted = isDeleted;
+      }
+
+  public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+  public Timestamp getCreatedAt()
   {
       return this.createdAt;
   }

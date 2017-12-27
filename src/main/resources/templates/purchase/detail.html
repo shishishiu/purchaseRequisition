@@ -25,7 +25,6 @@
          		<a href="javascript:void(0)" th:href="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" title="modificar descripción general"><i class="material-icons">mode_edit</i></a>
          	</div>
          	
-         	<div class="container"></div>
         	<table class="parent">
         		<thead>
         			<tr>
@@ -37,12 +36,12 @@
 			            <th>Compañía</th>
         			</tr>
 					<tr>
-						<td th:text="*{purchaseId}"></td>
-						<td th:text="*{userId} + ' ' + *{username}"></td>
-						<td th:text="*{applicatedAt}"></td>
-						<td th:text="*{deliveryDate}"></td>
-						<td th:text="*{isDomesticValue}"></td>
-						<td th:text="*{companyValue}"></td>
+						<td class="textCenter" th:text="*{purchaseId}"></td>
+						<td class="textCenter" th:text="*{userId} + ' ' + *{username}"></td>
+						<td class="textCenter" th:text="*{applicatedAt}"></td>
+						<td class="textCenter" th:text="*{deliveryDate}"></td>
+						<td class="textCenter" th:text="*{isDomesticValue}"></td>
+						<td class="textCenter" th:text="*{companyValue}"></td>
 					</tr>
         		</thead>       	
         	</table>
@@ -50,6 +49,9 @@
         	
         	</div>
         	<div class="container">
+	        	<div style="text-align: right">
+	        		<a th:href="@{/purchase/addItem/{purchaseId}(purchaseId=*{purchaseId})}" title="new item"><i class="material-icons">add</i></a>
+	        	</div>
         	<table>       	
         		<thead>
         			<tr>
@@ -62,21 +64,31 @@
 			            <th>Unit Price</th>
 			            <th>Total Price</th>
 			            <th>Currency</th>
+ 			            <th></th>
         			</tr>
 					<tr th:each="item,iterStat : ${itemList}" >
-						<td th:text="${item.purchaseItemId}"></td>
-	              		<td th:text="${item.quantity}"></td>
-	              		<td th:text="${item.unit}"></td>
-	              		<td th:text="${item.productName}"></td>
-	              		<td th:text="${item.brand}"></td>
-	              		<td th:text="${item.note}"></td>
-	              		<td th:text="${item.unitPrice}"></td>
-	              		<td th:text="${item.totalPrice}"></td>
-	              		<td th:text="${item.currency}"></td>
+						<td class="textCenter" th:text="${iterStat.count}"></td>
+	              		<td class="textCenter" th:text="${item.quantity}"></td>
+	              		<td class="textCenter" th:text="${item.unit}"></td>
+	              		<td class="textCenter" th:text="${item.productName}"></td>
+	              		<td class="textCenter" th:text="${item.brand}"></td>
+	              		<td class="textCenter" th:text="${item.note}"></td>
+	              		<td class="textCenter" th:text="${item.unitPrice}"></td>
+	              		<td class="textCenter" th:text="${item.totalPrice}"></td>
+	              		<td class="textCenter" th:text="${item.currency}"></td>
+						<td class="textCenter">
+							<a href="javascript:void(0)" th:href="@{/purchase/eitem/{purchaseItemId}(purchaseItemId=${item.purchaseItemId})}" title="edit"><i class="material-icons">mode_edit</i></a>
+							&nbsp;&nbsp;&nbsp;
+							<a href="javascript:void(0)" th:onclick="${'deleteItem(' + item.purchaseItemId + ')'}" title="delete"><i class="material-icons">delete</i></a>
+						</td>
 					</tr>
 				</thead>
 			</table>
         	</div>
+        	
+        	<input type="hidden" name="purchaseId" id="purchaseId" th:field="*{purchaseId}"/>
+        	<input type="hidden" name="purchaseItemId" id="purchaseItemId"/>
+        	
         </form>
 
 	</div>

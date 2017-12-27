@@ -28,13 +28,21 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
             andConditions.add("p.userId like :userId");
             bindParameters.put("userId", "%" + criteria.getUserId() + "%");
         }
-        if (criteria.getApplicatedAt()!= null && !criteria.getApplicatedAt().equals("")) {
-            andConditions.add("p.applicatedAt = :applicatedAt");
-            bindParameters.put("applicatedAt", criteria.getApplicatedAt());
+        if (criteria.getApplicatedAtFrom()!= null && !criteria.getApplicatedAtFrom().equals("")) {
+            andConditions.add("p.applicatedAt >= :applicatedAtFrom");
+            bindParameters.put("applicatedAtFrom", criteria.getApplicatedAtFrom());
         }
-        if (criteria.getDeliveryDate()!= null && !criteria.getDeliveryDate().equals("")) {
-            andConditions.add("p.deliveryDate = :deliveryDate");
-            bindParameters.put("deliveryDate", criteria.getDeliveryDate());
+        if (criteria.getApplicatedAtTo()!= null && !criteria.getApplicatedAtTo().equals("")) {
+            andConditions.add("p.applicatedAt <= :applicatedAtTo");
+            bindParameters.put("applicatedAtTo", criteria.getApplicatedAtTo());
+        }
+        if (criteria.getDeliveryDateFrom()!= null && !criteria.getDeliveryDateFrom().equals("")) {
+            andConditions.add("p.deliveryDate >= :deliveryDateFrom");
+            bindParameters.put("deliveryDateFrom", criteria.getDeliveryDateFrom());
+        }
+        if (criteria.getDeliveryDateTo()!= null && !criteria.getDeliveryDateTo().equals("")) {
+            andConditions.add("p.deliveryDate <= :deliveryDateTo");
+            bindParameters.put("deliveryDateTo", criteria.getDeliveryDateTo());
         }
 
         final StringBuilder queryString = new StringBuilder();

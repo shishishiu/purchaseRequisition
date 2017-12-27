@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header">
+	<title>Web Page</title>
+</head>
+<body>
+
+	<script src="/js/purchase/editItem.js"></script>
+	<div class="container">
+		<div th:replace="layout/loginInfo :: loginInfo"></div>
+
+
+        <form action="/purchase/saveItem" th:action="@{/purchase/saveItem}" method="post" id="editItemForm" th:object="${form}"
+        class="center">
+
+		
+        	<div>
+        		<a href="javascript:void(0)" th:href="@{/purchase/{purchaseId}(purchaseId=*{purchaseId})}" title="regresar">
+        			<i class="material-icons">navigate_before</i>
+        		</a>
+        	</div>
+        
+			<div class="containerShadow">
+
+	        	<div class="item">
+			        <label class="label">Cantidad</label>
+					<input autofocus="autofocus" class="item" type="number" id="quantity" name="quantity" th:field="*{quantity}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Unidad</label>
+					<input class="item" type="text" id="unit" name="unit" th:field="*{unit}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Product Name</label>
+					<input class="item" type="text" id="productName" name="productName" th:field="*{productName}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Brand</label>
+					<input class="item" type="text" id="brand" name="brand" th:field="*{brand}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Nota</label>
+					<textarea class="item" id="note" name="note" th:field="*{note}" th:errorclass="errorField"></textarea>
+					<label th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Unit Price</label>
+					<input class="item" type="number" id="unitPrice" name="unitPrice" th:field="*{unitPrice}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Total Price</label>
+					<input class="item" type="number" id="totalPrice" name="totalPrice" th:field="*{totalPrice}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('totalPrice')}" th:errors="*{totalPrice}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
+			        <label class="label">Currency</label>
+					<select th:class="item" id="currency" name="currency" th:errorclass="errorField">
+		            	<option value="0">---</option>
+		            	<option th:each="currency : ${currencyList}" th:value="${currency.value}" th:text="${currency.value}" th:selected="${currency.value} == *{currency}">pulldown</option>
+		            </select>
+					<label th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}" class="errMessage">error</label>
+			    </div>
+	 
+	        	<div class="item">
+					<div th:if="${userId==null}" style="display:inline">
+						<a href="javascript:void(0)" onclick="save()" title="save"><i class="material-icons">done_all</i></a>
+					</div>
+	        	</div>
+
+        	
+         	</div>
+         	
+        	<input type="hidden" name="purchaseItemId" th:field="*{purchaseItemId}"/>
+        	<input type="hidden" name="purchaseId" th:field="*{purchaseId}"/>
+        </form>
+
+	</div>
+
+  	<div th:include="layout/footer :: copy" th:fragment="containerFooter"></div>
+
+</body>
+</html>

@@ -7,34 +7,29 @@
 <body>
 
 	<section>
-		<form th:action="@{/login}" method="post">
-	    	<div class="container">  
+		<form th:action="@{/login}" method="post" class="center">
+	    	<div class="containerShadow" style="width:400px; margin:0 auto;">  
 	    	
-	    		<div  th:if="${param.error}" th:include="Layout/errorMessage :: errorMessage(#{err.msg.invalid.user.contrasena})">test</div>
+	    		<div th:if="${param.error}" th:include="Layout/errorMessage :: errorMessage(#{err.msg.invalid.user.contrasena})">test</div>
 	    		<div th:if="${param.logout}" th:include="Layout/message :: message(#{msg.terminar_sesion})">test</div>
 	    	
+
+	        	<div class="item">
+			        <label class="label"><span th:text="#{common.texto.usuario}"></span></label>
+					<input class="item" name="username" type="text" autofocus="autofocus"/>
+			    </div>
+	        	<div class="item">
+			        <label class="label"><span th:text="#{common.texto.contrasena}"></span></label>
+					<input class="item" name="password" type="password"/>
+			    </div>
 	
-	     		<p><strong><span th:text="#{common.texto.usuario}"></span></strong>
-	         		<input name="username" type="text" autofocus="autofocus"/>
-	         	</p>
-			    <p><strong><span th:text="#{common.texto.contrasena}"></span></strong>
-			    	<input name="password" type="password"/>
-			    </p>
-	    	</div>
-	    	<div style="margin-left: 10px">
-	     		<button type="submit" th:text="#{common.boton.iniciar_sesion}" class="boton" ></button>
+		    	<div style="text-align: center">
+		     		<button type="submit" th:text="#{common.boton.iniciar_sesion}" class="boton" ></button>
+		     	</div>
 	     	</div>
-	     	
 		</form>
 		
-	  <!--<div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null">
-    	<span th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"></span>
-  	  </div>-->
-		
 	</section>
-<!-- 	<footer>
-    	<p layout:fragment="footer"></p>
-  	</footer> -->
   	<div th:include="layout/footer :: copy"></div>
 </body>
 </html>

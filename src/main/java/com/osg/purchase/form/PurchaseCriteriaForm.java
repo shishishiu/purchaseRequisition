@@ -10,8 +10,10 @@ public class PurchaseCriteriaForm implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private String userId;
-    private String applicatedAt;
-    private String deliveryDate;
+    private String applicatedAtFrom;
+    private String deliveryDateFrom;
+    private String applicatedAtTo;
+    private String deliveryDateTo;
 	
     public void setUserId(String userId) {
         this.userId = userId;
@@ -20,18 +22,31 @@ public class PurchaseCriteriaForm implements Serializable{
 		return this.userId;
 	}
 
-    public void setApplicatedAt(String applicatedAt) {
-        this.applicatedAt = applicatedAt;
+    public void setApplicatedAtFrom(String applicatedAtFrom) {
+        this.applicatedAtFrom = applicatedAtFrom;
     }
-    public String getApplicatedAt(){
-		return this.applicatedAt;
+    public String getApplicatedAtFrom(){
+		return this.applicatedAtFrom;
 	}
 
-    public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setDeliveryDateFrom(String deliveryDateFrom) {
+        this.deliveryDateFrom = deliveryDateFrom;
     }
-    public String getDeliveryDate(){
-		return this.deliveryDate;
+    public String getDeliveryDateFrom(){
+		return this.deliveryDateFrom;
+	}
+    public void setApplicatedAtTo(String applicatedAtTo) {
+        this.applicatedAtTo = applicatedAtTo;
+    }
+    public String getApplicatedAtTo(){
+		return this.applicatedAtTo;
+	}
+
+    public void setDeliveryDateTo(String deliveryDateTo) {
+        this.deliveryDateTo = deliveryDateTo;
+    }
+    public String getDeliveryDateTo(){
+		return this.deliveryDateTo;
 	}
 
 

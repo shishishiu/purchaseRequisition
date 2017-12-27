@@ -2,10 +2,11 @@ package com.osg.purchase.form;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.osg.purchase.customValidation.StringDateFormat;
 
 
 public class PurchaseHeaderEditForm implements Serializable{
@@ -19,19 +20,20 @@ public class PurchaseHeaderEditForm implements Serializable{
 
 	private String username;
 
-    @Size(min = 10, max = 10)
-//    @DateTimeFormat(pattern="MM/dd/yyyy")
+    @StringDateFormat(pattern="yyyy-MM-dd", message="{err.msg.dateformat}")
 	private String applicatedAt;
 	
-    @Size(min = 10, max = 10)
+    @StringDateFormat(pattern="yyyy-MM-dd", message="{err.msg.dateformat}")
 	private String deliveryDate;
 	
 	@NotNull
+	@Min(value=1, message="{err.msg.requerido}")
     private int isDomestic;
 
     private String isDomesticValue;
 
 	@NotNull
+	@Min(value=1, message="{err.msg.requerido}")
     private int company;
 
     private String companyValue;

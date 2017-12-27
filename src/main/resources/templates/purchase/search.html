@@ -10,21 +10,31 @@
 	<div class="container">
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
-
-		<h2>Buscar Requisición de Compra</h2>
-
         <form action="/purchase/search" th:action="@{/purchase/search}" method="post" id="searchForm" th:object="${purchaseCriteriaForm}">
-          <div>
-            Id de Solicitante: <input type="text" name="userId" id="userId" th:value="*{userId}" class="condition" autofocus="autofocus"/>
-			&nbsp;Fecha de Material Solicitado:  <input type="text" name="applicatedAt" id="applicatedAt" th:value="*{applicatedAt}" class="condition"/>
-			&nbsp;Posible Fecha de Entrega:  <input type="text" name="deliveryDate" id="deliveryDate" th:value="*{deliveryDate}" class="condition"/>
+         <div class="containerShadow">
+         
+           	<div class="item">
+		        <label class="label">Id de Solicitante</label>
+		        <input type="text" name="userId" id="userId" th:value="*{userId}" class="condition" autofocus="autofocus"/>
+
+		        <label class="label">Fecha de Material Solicitado</label>
+		        <input type="text" name="applicatedAtFrom" id="applicatedAtFrom" th:value="*{applicatedAtFrom}" class="condition datepicker" placeholder="yyyy-mm-dd"/>
+		        &nbsp;-&nbsp;
+		        <input type="text" name="applicatedAtTo" id="applicatedAtTo" th:value="*{applicatedAtTo}" class="condition datepicker" placeholder="yyyy-mm-dd"/> 
+
+		        <label class="label">Posible Fecha de Entrega</label>
+		        <input type="text" name="deliveryDateFrom" id="deliveryDateFrom" th:value="*{deliveryDateFrom}" class="condition datepicker" placeholder="yyyy-mm-dd"/>
+		        &nbsp;-&nbsp;
+		        <input type="text" name="deliveryDateTo" id="deliveryDateTo" th:value="*{deliveryDateTo}" class="condition datepicker" placeholder="yyyy-mm-dd"/> 
+		    </div>
+         
             <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
             &nbsp;<a href="javascript:void(0)" onclick="clearCondition()" th:title="clear"><i class="material-icons">clear</i></a>
-            &nbsp;<a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a>
          </div>
         </form>
 
 	
+		<div style="text-align: right"><a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a></div>
 		<div class="row">
 	        <table class="table">
 	          <thead>

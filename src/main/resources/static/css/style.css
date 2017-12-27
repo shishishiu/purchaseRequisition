@@ -9,7 +9,19 @@ BODY
     color:black;
 }
 div.container{
-    margin: 10px;
+    padding: 0.5em 1em;
+    margin: 2em 0;
+}
+div.containerShadow{
+    padding: 0.5em 1em;
+    margin: 2em 0;
+    color: #5d627b;
+    background: white;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+}
+
+form.center{
+	width:500px; margin:10px auto;
 }
 .boton{
 	display: inline-block;
@@ -86,6 +98,21 @@ td.textLeft{text-align:left}
 div.row{
 	margin-top: 5px;
 	text-align: center;
+}
+div.item{
+	margin-bottom:30px;
+}
+div.item label.label{
+	padding: 5px;
+	display: block;
+}
+div.item label.item, input.item, select.item{
+	font-size:18px;
+	padding:10px 10px 10px 5px;
+	display:block;
+	width:300px;
+	border:none;
+	border-bottom:1px solid #757575;
 }
 .errMessage{
 	color:red;
