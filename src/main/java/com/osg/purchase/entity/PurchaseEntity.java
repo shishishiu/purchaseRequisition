@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +22,8 @@ import javax.persistence.Transient;
 import com.osg.purchase.entity.interf.EnumInterface;
 import com.osg.purchase.form.PurchaseCriteriaForm;
 import com.osg.purchase.util.DateUtils;
+
+import aj.org.objectweb.asm.Type;
 
 @Entity(name = "table_purchases")
 @Table(name = "table_purchases")
@@ -79,12 +82,13 @@ public class PurchaseEntity implements Serializable {
 	}
 	
 	
+//	@Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private int id;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @Column(nullable = false, unique = false)
-    private String purchaseId;
+    private int purchaseId;
 
     @Column
     private String userId;
@@ -116,13 +120,13 @@ public class PurchaseEntity implements Serializable {
     @Column(nullable = false)
     private int isDeleted;
 
-    @Column
+    @Column(insertable = false)
     private Timestamp createdAt;
 
     @Column
     private String createdUserId;
 
-    @Column
+    @Column(insertable = false)
     private Timestamp updatedAt;
 
     @Column
@@ -132,18 +136,18 @@ public class PurchaseEntity implements Serializable {
     private PurchaseCriteriaForm purchaseCriteria;
 
 
-   public void setId(int id) {
-	   this.id = id;
-   }
-    public int getId()
-   {
-       return this.id;
-   }
+//   public void setId(int id) {
+//	   this.id = id;
+//   }
+//    public int getId()
+//   {
+//       return this.id;
+//   }
 
-   public void setPurchaseId(String purchaseId) {
+   public void setPurchaseId(int purchaseId) {
        this.purchaseId = purchaseId;
    }
-    public String getPurchaseId()
+    public int getPurchaseId()
    {
        return this.purchaseId;
    }

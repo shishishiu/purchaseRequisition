@@ -22,11 +22,23 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
 	public List<PurchaseEntity> findPurchases(PurchaseCriteriaForm criteria) {
 
         final List<String> andConditions = new ArrayList<String>();
-        final Map<String, String> bindParameters = new HashMap<String, String>();
+        final Map<String, Object> bindParameters = new HashMap<String, Object>();
 
-        if (criteria.getUserId()!= null && !criteria.getUserId().equals("")) {
+        if (criteria.getPId()!= null && !criteria.getPId().equals("")) {
+        	
+        	int purchaseId = 0;
+        	try {
+            	purchaseId = Integer.parseInt(criteria.getPId());        		
+        	}catch(NumberFormatException ex) {
+        		
+        	}
+        	
+            andConditions.add("p.purchaseId = :purchaseId");
+            bindParameters.put("purchaseId", purchaseId);
+        }
+        if (criteria.getSolicitanteId()!= null && !criteria.getSolicitanteId().equals("")) {
             andConditions.add("p.userId like :userId");
-            bindParameters.put("userId", "%" + criteria.getUserId() + "%");
+            bindParameters.put("userId", "%" + criteria.getSolicitanteId() + "%");
         }
         if (criteria.getApplicatedAtFrom()!= null && !criteria.getApplicatedAtFrom().equals("")) {
             andConditions.add("p.applicatedAt >= :applicatedAtFrom");
@@ -46,16 +58,12 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
         }
 
         final StringBuilder queryString = new StringBuilder();
-        queryString.append("SELECT p FROM table_purchases p");
-//        queryString.append(" JOIN p.userId u");
-//        queryString.append(" JOIN master_codes comp ON comp.group_code = 2 AND comp.code = p.company AND comp.is_deleted = 0");
-//        queryString.append(" JOIN code isDomestic ON isDomestic.groupCcode = 1 AND isDomestic.code = p.isDomestic AND isDomestic.is_deleted = 0");
-//        queryString.append(" JOIN users u ON p.user_id = u.user_id ");
+        queryString.append("SELECT p FROM table_purchases p WHERE p.isDeleted = 0");
         
         Iterator<String> andConditionsIt = andConditions.iterator();
-        if (andConditionsIt.hasNext()) {
-            queryString.append(" WHERE ").append(andConditionsIt.next());
-        }
+//        if (andConditionsIt.hasNext()) {
+//            queryString.append(" WHERE ").append(andConditionsIt.next());
+//        }
         while (andConditionsIt.hasNext()) {
             queryString.append(" AND ").append(andConditionsIt.next());
         }
@@ -65,7 +73,7 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
         final TypedQuery<PurchaseEntity> findQuery = entityManager.createQuery(
                 queryString.toString(), PurchaseEntity.class);
 
-        for (Map.Entry<String, String> bindParameter : bindParameters
+        for (Map.Entry<String, Object> bindParameter : bindParameters
                 .entrySet()) {
             findQuery.setParameter(bindParameter.getKey(), bindParameter
                     .getValue());

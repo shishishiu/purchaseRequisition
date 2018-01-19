@@ -49,7 +49,7 @@ public class PurchaseItemEntity {
     private int purchaseItemId;
 
     @Column(nullable = false, unique = false)
-    private String purchaseId;
+    private int purchaseId;
 
     @Column
     private int quantity;
@@ -107,11 +107,11 @@ public class PurchaseItemEntity {
  	   this.purchaseItemId = purchaseItemId;
     }
 
-    public String getPurchaseId()
+    public int getPurchaseId()
    {
        return this.purchaseId;
    }
-    public void setPurchaseId(String purchaseId) {
+    public void setPurchaseId(int purchaseId) {
   	   this.purchaseId = purchaseId;
      }
 

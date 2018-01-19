@@ -1,10 +1,13 @@
 package com.osg.purchase.form;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 
 import com.osg.purchase.customValidation.StringDateFormat;
 
@@ -13,7 +16,7 @@ public class PurchaseHeaderEditForm implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private String purchaseId;
+	private int purchaseId;
 
     @Size(min = 1, max = 255)
 	private String userId;
@@ -21,7 +24,7 @@ public class PurchaseHeaderEditForm implements Serializable{
 	private String username;
 
     @StringDateFormat(pattern="yyyy-MM-dd", message="{err.msg.dateformat}")
-	private String applicatedAt;
+	private String applicatedAt = GetToday();
 	
     @StringDateFormat(pattern="yyyy-MM-dd", message="{err.msg.dateformat}")
 	private String deliveryDate;
@@ -38,10 +41,14 @@ public class PurchaseHeaderEditForm implements Serializable{
 
     private String companyValue;
 
-    public void setPurchaseId(String purchaseId) {
+    public void setPurchaseId(int purchaseId) {
         this.purchaseId = purchaseId;
     }
-	public String getPurchaseId(){
+	private String GetToday() {
+    	SimpleDateFormat d1 = new SimpleDateFormat("yyyy-MM-dd");
+    	return d1.format(new Date());
+	}
+	public int getPurchaseId(){
 		return this.purchaseId;
 	}
 
@@ -63,7 +70,7 @@ public class PurchaseHeaderEditForm implements Serializable{
         this.applicatedAt = applicatedAt;
     }
     public String getApplicatedAt(){
-		return this.applicatedAt;
+    	return this.applicatedAt;
 	}
 
     public void setDeliveryDate(String deliveryDate) {

@@ -7,7 +7,6 @@ import com.osg.purchase.form.PurchaseCriteriaForm;
 
 public interface CustomizedPurchaseRepository  {
 
-//	List<PurchaseEntity> findAllByUserId(PurchaseCriteriaForm criteria); 
 	List<PurchaseEntity> findPurchases(PurchaseCriteriaForm criteria); 
 	
 }

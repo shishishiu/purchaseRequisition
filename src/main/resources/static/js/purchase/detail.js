@@ -4,12 +4,23 @@ function back(){
 }
 function deleteItem(purchaseItemId){
 	
-	if(!confirm("Quieres eliminar?")){
-		return;
+	if($(".data").length<=1){
+
+		if(!confirm("Quieres eliminar? Se elimina la requisición.")){
+			return;
+		}
+		document.getElementById("detailForm").action = "delete"
+		
+	} else {
+	
+		if(!confirm("Quieres eliminar?")){
+			return;
+		}
+		document.getElementById("detailForm").action = "deleteItem"
+
 	}
 	
 	$("#purchaseItemId").val(purchaseItemId);
-	document.getElementById("detailForm").action = "deleteItem"
 	document.getElementById("detailForm").submit();
 
 }

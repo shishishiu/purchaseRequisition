@@ -14,8 +14,11 @@
          <div class="containerShadow">
          
            	<div class="item">
+		        <label class="label">Requisición No.</label>
+		        <input type="text" name="pId" id="pId" th:value="*{pId}" class="condition" autofocus="autofocus"/>
+
 		        <label class="label">Id de Solicitante</label>
-		        <input type="text" name="userId" id="userId" th:value="*{userId}" class="condition" autofocus="autofocus"/>
+		        <input type="text" name="solicitanteId" id="solicitanteId" th:value="*{solicitanteId}" class="condition"/>
 
 		        <label class="label">Fecha de Material Solicitado</label>
 		        <input type="text" name="applicatedAtFrom" id="applicatedAtFrom" th:value="*{applicatedAtFrom}" class="condition datepicker" placeholder="yyyy-mm-dd"/>

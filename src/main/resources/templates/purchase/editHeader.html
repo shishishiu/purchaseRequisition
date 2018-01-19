@@ -16,9 +16,16 @@
 
 		
         	<div>
-         		<a href="javascript:void(0)" th:href="@{/purchase/{purchaseId}(purchaseId=*{purchaseId})}" title="regresar">
-        			<i class="material-icons">navigate_before</i>
-        		</a>
+        		<div th:if="${purchaseId le 0}">
+	         		<a href="javascript:void(0)" onclick="back()" title="regresar">
+	        			<i class="material-icons">navigate_before</i>
+	        		</a>
+        		</div>
+        		<div th:unless="${purchaseId le 0}">
+	         		<a href="javascript:void(0)" th:href="@{/purchase/{purchaseId}(purchaseId=*{purchaseId})}" title="regresar">
+	        			<i class="material-icons">navigate_before</i>
+	        		</a>
+        		</div>
         	</div>
         
 			<div class="containerShadow">

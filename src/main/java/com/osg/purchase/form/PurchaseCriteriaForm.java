@@ -2,24 +2,29 @@ package com.osg.purchase.form;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class PurchaseCriteriaForm implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private String userId;
+	private String purchaseId;
+	private String solicitanteId;
     private String applicatedAtFrom;
     private String deliveryDateFrom;
     private String applicatedAtTo;
     private String deliveryDateTo;
 	
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setPId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
-	public String getUserId(){
-		return this.userId;
+	public String getPId(){
+		return this.purchaseId;
+	}
+    public void setSolicitanteId(String solicitanteId) {
+        this.solicitanteId = solicitanteId;
+    }
+	public String getSolicitanteId(){
+		return this.solicitanteId;
 	}
 
     public void setApplicatedAtFrom(String applicatedAtFrom) {

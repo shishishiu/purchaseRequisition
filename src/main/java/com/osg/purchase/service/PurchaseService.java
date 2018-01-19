@@ -24,4 +24,9 @@ public class PurchaseService {
 		
 	}
 
+	public void deleteLogical(String loggedInUserId, int purchaseId) {
+		
+		purchaseRepository.updateIsDeletedDelete(loggedInUserId, purchaseId);
+	}
+
 }

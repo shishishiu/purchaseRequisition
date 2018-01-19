@@ -10,7 +10,7 @@ public class PurchaseItemEditForm implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private String purchaseId;
+	private int purchaseId;
 	private int purchaseItemId;
     @Size(min = 1, max = 255)
 	private String userId;
@@ -30,10 +30,10 @@ public class PurchaseItemEditForm implements Serializable{
 	@Size(min=2, message="{err.msg.requerido}")
     private String currency;
 
-    public void setPurchaseId(String purchaseId) {
+    public void setPurchaseId(int purchaseId) {
         this.purchaseId = purchaseId;
     }
-	public String getPurchaseId(){
+	public int getPurchaseId(){
 		return this.purchaseId;
 	}
   public void setPurchaseItemId(int purchaseItemId) {
