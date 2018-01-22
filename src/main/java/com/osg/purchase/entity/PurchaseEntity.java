@@ -117,6 +117,13 @@ public class PurchaseEntity implements Serializable {
     @Column
     private String machineNo;
 
+    @Column
+    private int isDelivered;
+    
+    @Column
+    private String deliveredDate;
+
+
     @Column(nullable = false)
     private int isDeleted;
 
@@ -134,15 +141,6 @@ public class PurchaseEntity implements Serializable {
 
    @Transient
     private PurchaseCriteriaForm purchaseCriteria;
-
-
-//   public void setId(int id) {
-//	   this.id = id;
-//   }
-//    public int getId()
-//   {
-//       return this.id;
-//   }
 
    public void setPurchaseId(int purchaseId) {
        this.purchaseId = purchaseId;
@@ -204,7 +202,10 @@ public class PurchaseEntity implements Serializable {
     	else return null;
    }
 
-    public String getMachineNo()
+    public void setMachineNo(String machineNo) {
+        this.machineNo = machineNo;
+    }
+   public String getMachineNo()
    {
        return this.machineNo;
    }

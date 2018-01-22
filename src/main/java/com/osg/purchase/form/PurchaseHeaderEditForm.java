@@ -40,6 +40,8 @@ public class PurchaseHeaderEditForm implements Serializable{
     private int company;
 
     private String companyValue;
+    @Size(min = 1, max = 255)
+    private String machineNo;
 
     public void setPurchaseId(int purchaseId) {
         this.purchaseId = purchaseId;
@@ -108,6 +110,12 @@ public class PurchaseHeaderEditForm implements Serializable{
   }
   public String getCompanyValue(){
 		return this.companyValue;
+	}
+  public void setMachineNo(String machineNo) {
+      this.machineNo = machineNo;
+  }
+	public String getMachineNo(){
+		return this.machineNo;
 	}
 
 }

@@ -45,6 +45,7 @@
 		          <th>No</th>
 		          <th>Requisición No</th>
 	              <th>Nombre de Solicitante</th>
+	              <th>Machine No</th>
 	              <th>Fecha Material Solicitado</th>
 	              <th>Posible Fecha de Entrega</th>
 	              <th>Nacional o Importado</th>
@@ -58,6 +59,7 @@
 	              <td class="textCenter"><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
 	              <td class="textCenter" th:text="${item.purchaseId}"></td>
 	              <td th:text="${item.member}? ${item.userId} + ' ' + ${item.member.username}: ${item.userId}"></td>
+	              <td class="textCenter" th:text="${item.machineNo}"></td>
 	              <td class="textCenter" th:text="${item.applicatedAt}"></td>
 	              <td class="textCenter" th:text="${item.deliveryDate}"></td>
 	              <td class="textCenter" th:text="${item.isDomesticValue}"></td>

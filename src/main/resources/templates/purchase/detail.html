@@ -30,6 +30,7 @@
         			<tr>
         				<th>Id del Requisición</th>
         				<th>Id del Solicitante</th>
+			            <th>Machine No</th>
         				<th>Fecha Material Solicitado</th>
 			            <th>Posible Fecha de Entrega</th>
 			            <th>Nacional o Importado</th>
@@ -38,6 +39,7 @@
 					<tr>
 						<td class="textCenter" th:text="*{purchaseId}"></td>
 						<td class="textCenter" th:text="*{userId} + ' ' + *{username}"></td>
+						<td class="textCenter" th:text="*{machineNo}"></td>
 						<td class="textCenter" th:text="*{applicatedAt}"></td>
 						<td class="textCenter" th:text="*{deliveryDate}"></td>
 						<td class="textCenter" th:text="*{isDomesticValue}"></td>
