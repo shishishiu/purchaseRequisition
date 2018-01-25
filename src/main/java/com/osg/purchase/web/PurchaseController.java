@@ -1,12 +1,19 @@
 package com.osg.purchase.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -26,6 +33,7 @@ import com.osg.purchase.entity.PurchaseEntity.CompanyValue;
 import com.osg.purchase.entity.PurchaseEntity.IsDomesticValue;
 import com.osg.purchase.entity.PurchaseItemEntity;
 import com.osg.purchase.entity.PurchaseItemEntity.Currency;
+import com.osg.purchase.excel.ExcelBuilder;
 import com.osg.purchase.form.PurchaseCriteriaForm;
 import com.osg.purchase.form.PurchaseHeaderEditForm;
 import com.osg.purchase.form.PurchaseItemEditForm;
@@ -401,6 +409,41 @@ public class PurchaseController {
 
         return mv;
    }
+
+    @Autowired
+    ResourceLoader resourceLoader;
+
+	@RequestMapping(value="/dl", method=RequestMethod.POST)
+    public ModelAndView dl(@RequestParam("purchaseId") int purchaseId) {
+
+        String filepath = "static/excel/templatePurchase.xlsx";
+        Resource resource = resourceLoader.getResource("classpath:" + filepath);
+        String filepathImg = "static/excel/logo.jpg";
+        Resource resourceimg = resourceLoader.getResource("classpath:" + filepathImg);
+        File file = null;
+        File fileImg = null;
+        try
+        {
+			file = resource.getFile();
+			fileImg = resourceimg.getFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("purchase", entity);
+    	map.put("template", file);
+    	map.put("logo", fileImg);
+
+		ModelAndView mv = new ModelAndView(new ExcelBuilder(),map);
+
+         
+//        mv.addObject("fileName", "POI" + ".xlsx");
+
+        return mv;
+    }
 
    
 }

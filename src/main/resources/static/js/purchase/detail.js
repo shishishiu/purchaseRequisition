@@ -24,3 +24,7 @@ function deleteItem(purchaseItemId){
 	document.getElementById("detailForm").submit();
 
 }
+function dl(){
+	document.getElementById("detailForm").action="dl";
+	document.getElementById("detailForm").submit();
+}
