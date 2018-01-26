@@ -2,6 +2,7 @@ package com.osg.purchase.form;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,6 +30,8 @@ public class PurchaseItemEditForm implements Serializable{
 	@NotNull
 	@Size(min=2, message="{err.msg.requerido}")
     private String currency;
+	@Size(min=1, message="{err.msg.requerido}")
+    private String applicationArea;
 
     public void setPurchaseId(int purchaseId) {
         this.purchaseId = purchaseId;
@@ -112,6 +115,13 @@ public class PurchaseItemEditForm implements Serializable{
  public String getCurrency(){
 		return this.currency;
 	}
+ public String getApplicationArea()
+ {
+    return this.applicationArea;
+ }
+ public void setApplicationArea(String applicationArea) {
+   this.applicationArea = applicationArea;
+  }
 
 
 }

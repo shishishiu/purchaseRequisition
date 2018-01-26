@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -416,15 +415,12 @@ public class PurchaseController {
 	@RequestMapping(value="/dl", method=RequestMethod.POST)
     public ModelAndView dl(@RequestParam("purchaseId") int purchaseId) {
 
-        String filepath = "static/excel/templatePurchase.xlsx";
-        Resource resource = resourceLoader.getResource("classpath:" + filepath);
         String filepathImg = "static/excel/logo.jpg";
         Resource resourceimg = resourceLoader.getResource("classpath:" + filepathImg);
         File file = null;
         File fileImg = null;
         try
         {
-			file = resource.getFile();
 			fileImg = resourceimg.getFile();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -50,11 +50,12 @@
 	              <th>Posible Fecha de Entrega</th>
 	              <th>Nacional o Importado</th>
 	              <th>Compañía</th>
+	              <th></th>
 	            </tr>
 	          </thead>
 	          <tbody>
 	            <tr th:each="item,iterStat : ${list}" 
-	            th:with="rowcolor =(${item.isNearDeliveryDate == true} ? 'alert' : '')"
+	            th:with="rowcolor =(${item.isNearDeliveryDate == true and ${item.isDelivered == 0} ? 'alert' : '')"
 	            th:class="${rowcolor}">
 	              <td class="textCenter"><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
 	              <td class="textCenter" th:text="${item.purchaseId}"></td>
@@ -64,6 +65,8 @@
 	              <td class="textCenter" th:text="${item.deliveryDate}"></td>
 	              <td class="textCenter" th:text="${item.isDomesticValue}"></td>
 	              <td class="textCenter" th:text="${item.companyValue}"></td>
+	              <td class="textCenter" th:if="${item.isDelivered == 1}"><i class="material-icons">done</i></td>
+	              <td class="textCenter" th:if="${item.isDelivered == 0}"></td>
 	              
 	            </tr>
 	          </tbody>

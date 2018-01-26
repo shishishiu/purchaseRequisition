@@ -16,7 +16,7 @@ public class PurchaseItemService {
 		
 		purchaseItemRepository.updatePurchaseItem(entity.getQuantity(), entity.getUnit(), entity.getProductName(), 
     			entity.getBrand(), entity.getNote(), entity.getUnitPrice(), entity.getTotalPrice(), entity.getCurrency(), 
-    			loggedInUserId, entity.getPurchaseItemId());
+    			entity.getApplicationArea(), loggedInUserId, entity.getPurchaseItemId());
 	}
 	public void deleteLogical(String loggedInUserId, int purchaseItemId) {
 		

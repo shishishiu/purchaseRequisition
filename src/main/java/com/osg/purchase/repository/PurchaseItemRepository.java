@@ -17,9 +17,9 @@ JpaSpecificationExecutor<PurchaseEntity> {
     
     @Modifying
     @Transactional
-    @Query("UPDATE table_purchases_items SET quantity=?1, unit=?2, product_name=?3, brand=?4, note=?5, unit_price=?6, total_price=?7, currency=?8, updated_user_id=?9 WHERE purchase_item_id=?10")
+    @Query("UPDATE table_purchases_items SET quantity=?1, unit=?2, product_name=?3, brand=?4, note=?5, unit_price=?6, total_price=?7, currency=?8, application_area=?9, updated_user_id=?10 WHERE purchase_item_id=?11")
     public void updatePurchaseItem(int quantity, String unit, String productName, String brand, String note, int unitPrice, int totalPrice, 
-    		String currency, String userId, int purchaseItemId);
+    		String currency, String applicationArea, String userId, int purchaseItemId);
 
     @Modifying
     @Transactional

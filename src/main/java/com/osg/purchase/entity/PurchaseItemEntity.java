@@ -38,11 +38,6 @@ public class PurchaseItemEntity {
 
 	}
 
-    
-//	@Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private int id;
-
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, unique = false)
@@ -76,6 +71,9 @@ public class PurchaseItemEntity {
     private String currency;
 
     @Column
+    private String applicationArea;
+
+    @Column
     private int isDeleted;
 
     @Column(insertable = false)
@@ -88,16 +86,6 @@ public class PurchaseItemEntity {
 
     @Column
     private String updatedUserId;
-
-    
-
-//    public int getId()
-//   {
-//       return this.id;
-//   }
-//    public void setId(int id) {
-// 	   this.id = id;
-//    }
 
     public int getPurchaseItemId()
    {
@@ -177,6 +165,14 @@ public class PurchaseItemEntity {
    }
     public void setCurrency(String currency) {
   	   this.currency = currency;
+     }
+
+    public String getApplicationArea()
+   {
+       return this.applicationArea;
+   }
+    public void setApplicationArea(String applicationArea) {
+  	   this.applicationArea = applicationArea;
      }
 
     public int getIsDeleted()

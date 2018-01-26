@@ -49,6 +49,11 @@
 					<label th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="errMessage">error</label>
 			    </div>
 	        	<div class="item">
+			        <label class="label">Área de Aplicación</label>
+					<input class="item" type="text" id="applicationArea" name="applicationArea" th:field="*{applicationArea}" th:errorclass="errorField"/>
+					<label th:if="${#fields.hasErrors('applicationArea')}" th:errors="*{applicationArea}" class="errMessage">error</label>
+			    </div>
+	        	<div class="item">
 			        <label class="label">Unit Price</label>
 					<input class="item" type="number" id="unitPrice" name="unitPrice" th:field="*{unitPrice}" th:errorclass="errorField"/>
 					<label th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}" class="errMessage">error</label>

@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,8 +21,6 @@ import javax.persistence.Transient;
 import com.osg.purchase.entity.interf.EnumInterface;
 import com.osg.purchase.form.PurchaseCriteriaForm;
 import com.osg.purchase.util.DateUtils;
-
-import aj.org.objectweb.asm.Type;
 
 @Entity(name = "table_purchases")
 @Table(name = "table_purchases")
@@ -81,11 +78,6 @@ public class PurchaseEntity implements Serializable {
 
 	}
 	
-	
-//	@Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private int id;
-
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int purchaseId;
@@ -209,6 +201,14 @@ public class PurchaseEntity implements Serializable {
    {
        return this.machineNo;
    }
+
+   public void setIsDelivered(int isDelivered) {
+       this.isDelivered = isDelivered;
+   }
+  public int getIsDelivered()
+  {
+	  return this.isDelivered;
+  }
 
    public int getEnable()
    {
