@@ -28,3 +28,7 @@ function dl(){
 	document.getElementById("detailForm").action="dl";
 	document.getElementById("detailForm").submit();
 }
+function saveDeliverdDate(){
+	document.getElementById("detailForm").action="saveDeliverdDate";
+	document.getElementById("detailForm").submit();
+}

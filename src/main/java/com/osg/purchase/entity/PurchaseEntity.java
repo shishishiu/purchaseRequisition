@@ -112,7 +112,7 @@ public class PurchaseEntity implements Serializable {
     @Column
     private int isDelivered;
     
-    @Column
+   @Column
     private String deliveredDate;
 
 
@@ -209,6 +209,14 @@ public class PurchaseEntity implements Serializable {
   {
 	  return this.isDelivered;
   }
+
+  public void setDeliveredDate(String deliveredDate) {
+      this.deliveredDate = deliveredDate;
+  }
+ public String getDeliveredDate()
+ {
+	  return this.deliveredDate;
+ }
 
    public int getEnable()
    {

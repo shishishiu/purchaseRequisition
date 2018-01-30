@@ -132,20 +132,17 @@ public class PurchaseController {
     	
     	ModelAndView mv = new ModelAndView();
 
-    	setPurchase(purchaseId, mv);
+    	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
+    	setPurchase(entity, mv);
 
     	mv.setViewName("purchase/detail");
 
 		return mv;
     }
 
-	private void setPurchase(int purchaseId, ModelAndView mv) {
-    	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
+	private void setPurchase(PurchaseEntity entity, ModelAndView mv) {
     	
-    	PurchaseHeaderEditForm form = new PurchaseHeaderEditForm();
-    	BeanUtils.copyProperties(entity, form);
-    	form.setUsername(entity.getMember().getUsername());
-    	mv.addObject("form", form);
+    	mv.addObject("form", entity);
  
        	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
     	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
@@ -200,7 +197,9 @@ public class PurchaseController {
             	
             	purchaseService.updatePurchaseHeader(entity, loggedInUser.getUserId());
             	
-            	setPurchase(form.getPurchaseId(), mv);
+            	PurchaseEntity pentity = purchaseRepository.findByPurchaseId(form.getPurchaseId());
+
+            	setPurchase(pentity, mv);
             	mv.setViewName("purchase/detail");
         		
         	}
@@ -249,7 +248,7 @@ public class PurchaseController {
 
         	PurchaseItemEntity entity = new PurchaseItemEntity();
         	BeanUtils.copyProperties(form, entity);
-        	
+
         	
         	if(purchaseHeaderEditForm.getPurchaseId()<=0) {
         		//register new Header
@@ -292,7 +291,8 @@ public class PurchaseController {
 	            
             } else {
             
-            	setPurchase(form.getPurchaseId(), mv);
+            	PurchaseEntity pe = purchaseRepository.findByPurchaseId(entity.getPurchaseId());
+            	setPurchase(pe, mv);
             	mv.setViewName("purchase/detail");
            	
             	
@@ -319,7 +319,8 @@ public class PurchaseController {
     	
     	purchaseItemService.deleteLogical(loggedInUser.getUserId(), purchaseItemId);
     	
-    	setPurchase(purchaseId, mv);
+    	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
+    	setPurchase(entity, mv);
     	mv.setViewName("purchase/detail");
 		return mv;
     }
@@ -417,7 +418,6 @@ public class PurchaseController {
 
         String filepathImg = "static/excel/logo.jpg";
         Resource resourceimg = resourceLoader.getResource("classpath:" + filepathImg);
-        File file = null;
         File fileImg = null;
         try
         {
@@ -428,18 +428,37 @@ public class PurchaseController {
 		}
 
     	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
+    	
+       	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
+    	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
+       	entity.setPurchaseItemList(list);
+       	
     	Map<String, Object> map = new HashMap<>();
     	map.put("purchase", entity);
-    	map.put("template", file);
     	map.put("logo", fileImg);
 
 		ModelAndView mv = new ModelAndView(new ExcelBuilder(),map);
 
-         
-//        mv.addObject("fileName", "POI" + ".xlsx");
+		return mv;
+    }	
+
+	@RequestMapping(value="/saveDeliverdDate", method=RequestMethod.POST)
+    public ModelAndView saveDeliverdDate(@RequestParam("purchaseId") int purchaseId, 
+    		@RequestParam("deliveredDate") String deliveredDate, @ModelAttribute MemberEntity loggedInUser) {
+		
+        ModelAndView mv = new ModelAndView();
+      
+    	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);    	
+    	entity.setDeliveredDate(deliveredDate);
+    	entity.setIsDelivered(1);
+    	purchaseService.updatePurchaseHeader(entity, loggedInUser.getUserId());
+
+    	setPurchase(entity, mv);
+    	mv.setViewName("purchase/detail");
+        
 
         return mv;
-    }
 
+	}
    
 }

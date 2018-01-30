@@ -55,7 +55,7 @@
 	          </thead>
 	          <tbody>
 	            <tr th:each="item,iterStat : ${list}" 
-	            th:with="rowcolor =(${item.isNearDeliveryDate == true and ${item.isDelivered == 0} ? 'alert' : '')"
+	            th:with="rowcolor =(${item.isNearDeliveryDate == true and item.isDelivered == 0} ? 'alert' : '')"
 	            th:class="${rowcolor}">
 	              <td class="textCenter"><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
 	              <td class="textCenter" th:text="${item.purchaseId}"></td>

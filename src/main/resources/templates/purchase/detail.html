@@ -21,9 +21,23 @@
         
         	<div class="container">
          	
-         	<div style="text-align: right">
-         		<a href="javascript:void(0)" th:href="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" title="modificar descripción general"><i class="material-icons">mode_edit</i></a>
+         	<div th:if="*{isDelivered == 0}" class="messageLine">
+         		<label>YA SE ENTREGÓ EN EL </label>
+         		<input type="text" name="deliveredDate" id="deliveredDate" th:value="*{deliveredDate}" class="datepicker" placeholder="yyyy-mm-dd"/>
+         		<a href="javascript:void(0)" onclick="saveDeliverdDate()" title="save"><i class="material-icons">done_all</i></a>
+         	</div>
+         	<div th:if="*{isDelivered == 1}" class="messageLine message">YA SE ENTREGÓ. FECHA DE ENTREGA: <span style="font-weight: bold;" th:text="*{deliveredDate}"></span></div>
+
+
+         	<div style="text-align: right" th:if="*{isDelivered == 0}">
+         		<a href="javascript:void(0)" th:href="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" title="modificar descripción general">
+         			<i class="material-icons">mode_edit</i>
+         		</a>
          		<a href="javascript:void(0)" onclick="dl()" title="download"><i class="material-icons">file_download</i></a>
+         	</div>
+         	<div style="text-align: right" th:if="*{isDelivered == 1}">
+       			<i class="material-icons">mode_edit</i>
+         		<i class="material-icons">file_download</i>
          	</div>
          	
         	<table class="parent">
@@ -37,9 +51,9 @@
 			            <th>Nacional o Importado</th>
 			            <th>Compañía</th>
         			</tr>
-					<tr>
+					<tr th:with="rowcolor =(*{isNearDeliveryDate == true and isDelivered == 0} ? 'alert' : '')" th:class="${rowcolor}">
 						<td class="textCenter" th:text="*{purchaseId}"></td>
-						<td class="textCenter" th:text="*{userId} + ' ' + *{username}"></td>
+						<td class="textCenter" th:text="*{userId} + ' ' + *{member.username}"></td>
 						<td class="textCenter" th:text="*{machineNo}"></td>
 						<td class="textCenter" th:text="*{applicatedAt}"></td>
 						<td class="textCenter" th:text="*{deliveryDate}"></td>
@@ -49,10 +63,9 @@
         		</thead>       	
         	</table>
         	
-        	
         	</div>
         	<div class="container">
-	        	<div style="text-align: right">
+	        	<div style="text-align: right" th:if="*{isDelivered == 0}">
 	        		<a th:href="@{/purchase/addItem/{purchaseId}(purchaseId=*{purchaseId})}" title="new item"><i class="material-icons">add</i></a>
 	        	</div>
         	<table>       	
@@ -81,10 +94,13 @@
 	              		<td class="textCenter" th:text="${item.unitPrice}"></td>
 	              		<td class="textCenter" th:text="${item.totalPrice}"></td>
 	              		<td class="textCenter" th:text="${item.currency}"></td>
-						<td class="textCenter">
+						<td class="textCenter" th:if="*{isDelivered == 0}">
 							<a href="javascript:void(0)" th:href="@{/purchase/eitem/{purchaseItemId}(purchaseItemId=${item.purchaseItemId})}" title="edit"><i class="material-icons">mode_edit</i></a>
 							&nbsp;&nbsp;&nbsp;
 							<a href="javascript:void(0)" th:onclick="${'deleteItem(' + item.purchaseItemId + ')'}" title="delete"><i class="material-icons">delete</i></a>
+						</td>
+						<td class="textCenter" th:if="*{isDelivered == 1}">
+							<i class="material-icons">mode_edit</i>&nbsp;&nbsp;&nbsp;<i class="material-icons">delete</i>
 						</td>
 					</tr>
 				</thead>
