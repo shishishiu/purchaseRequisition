@@ -64,5 +64,8 @@ function searchPurchase(){
 function clearCondition(){
 	$(".condition").val("");
 	$(".condition")[0].focus();
+	
+	$( "input[name='checkIsDelivered']" ).prop("checked",false);
+	$( "input[name='checkIsDelivered']" )[0].checked = true;
 
 }

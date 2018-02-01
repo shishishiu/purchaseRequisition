@@ -29,6 +29,14 @@
 		        <input type="text" name="deliveryDateFrom" id="deliveryDateFrom" th:value="*{deliveryDateFrom}" class="condition datepicker" placeholder="yyyy-mm-dd"/>
 		        &nbsp;-&nbsp;
 		        <input type="text" name="deliveryDateTo" id="deliveryDateTo" th:value="*{deliveryDateTo}" class="condition datepicker" placeholder="yyyy-mm-dd"/> 
+		    	&nbsp;&nbsp;
+		    	
+		    	<div th:each="item : ${isDeliveredItems}" style="display:inline">
+              		<label>
+                	<input type="checkbox" name="checkIsDelivered" th:value="${item.value}" th:text="${item.key}" th:field="*{checkIsDelivered}">checkbox</input>
+              		</label>
+            	</div>
+		    	
 		    </div>
          
             <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
@@ -37,7 +45,12 @@
         </form>
 
 	
-		<div style="text-align: right"><a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a></div>
+		<div style="text-align: right">
+			<a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a>
+		</div>
+		<div style="text-align: right">
+			Total: <span th:text="${#lists.size(list)}"></span>
+		</div>
 		<div class="row">
 	        <table class="table">
 	          <thead>
