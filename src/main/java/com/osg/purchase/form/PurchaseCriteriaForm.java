@@ -13,7 +13,8 @@ public class PurchaseCriteriaForm implements Serializable{
     private String deliveryDateFrom;
     private String applicatedAtTo;
     private String deliveryDateTo;
-	
+    private String[] checkIsDelivered = {"0"};
+    
     public void setPId(String purchaseId) {
         this.purchaseId = purchaseId;
     }
@@ -52,6 +53,12 @@ public class PurchaseCriteriaForm implements Serializable{
     }
     public String getDeliveryDateTo(){
 		return this.deliveryDateTo;
+	}
+    public void setCheckIsDelivered(String[] checkIsDelivered) {
+        this.checkIsDelivered = checkIsDelivered;
+    }
+	public String[] getCheckIsDelivered(){
+		return this.checkIsDelivered;
 	}
 
 

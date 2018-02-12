@@ -6,18 +6,18 @@
 </head>
 <body>
 
-	<script src="/js/purchase/editHeader.js"></script>
+	<script th:src="@{/js/purchase/editHeader.js}"></script>
 	<div class="container">
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
 
-        <form action="/purchase/saveHeader" th:action="@{/purchase/saveHeader}" method="post" id="editHeaderForm" th:object="${form}"
+        <form th:action="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" method="post" id="editHeaderForm" th:object="${form}"
         class="center">
 
 		
         	<div>
         		<div th:if="${purchaseId le 0}">
-	         		<a href="javascript:void(0)" onclick="back()" title="regresar">
+	         		<a href="javascript:void(0)" th:href="@{../back}" title="regresar">
 	        			<i class="material-icons">navigate_before</i>
 	        		</a>
         		</div>

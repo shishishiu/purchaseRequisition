@@ -3,13 +3,16 @@ package com.osg.purchase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-public class PurchaseRequisitionApplication extends WebMvcConfigurerAdapter {
+//public class PurchaseRequisitionApplication extends WebMvcConfigurerAdapter {
+public class PurchaseRequisitionApplication extends SpringBootServletInitializer  {
 
     @Autowired
     private MessageSource messageSource;
@@ -18,6 +21,10 @@ public class PurchaseRequisitionApplication extends WebMvcConfigurerAdapter {
 		SpringApplication.run(PurchaseRequisitionApplication.class, args);
 	}
 	
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(PurchaseRequisitionApplication.class);
+    }
 
     /**
      * LocalValidatorFactoryBeanのsetValidationMessageSourceで
@@ -33,7 +40,7 @@ public class PurchaseRequisitionApplication extends WebMvcConfigurerAdapter {
         return localValidatorFactoryBean;
     }
 
-    @Override
+//    @Override
     public org.springframework.validation.Validator getValidator() {
         return validator();
     }

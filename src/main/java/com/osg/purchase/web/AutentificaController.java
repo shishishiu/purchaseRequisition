@@ -22,7 +22,7 @@ public class AutentificaController {
         return "home";
     }
 
-    @RequestMapping("/menu")
+    @RequestMapping("menu")
     public String admin() {
         return "menu";
     }

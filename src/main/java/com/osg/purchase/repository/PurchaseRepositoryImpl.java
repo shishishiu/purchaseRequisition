@@ -56,6 +56,10 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
             andConditions.add("p.deliveryDate <= :deliveryDateTo");
             bindParameters.put("deliveryDateTo", criteria.getDeliveryDateTo());
         }
+        if(criteria.getCheckIsDelivered() != null && criteria.getCheckIsDelivered().length == 1) {
+            andConditions.add("p.isDelivered = :isDelivered");
+            bindParameters.put("isDelivered", Integer.parseInt(criteria.getCheckIsDelivered()[0]));
+        }
 
         final StringBuilder queryString = new StringBuilder();
         queryString.append("SELECT p FROM table_purchases p WHERE p.isDeleted = 0");
@@ -68,7 +72,7 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
             queryString.append(" AND ").append(andConditionsIt.next());
         }
 
-        queryString.append(" ORDER BY p.applicatedAt");
+        queryString.append(" ORDER BY p.isDelivered, p.applicatedAt");
 
         final TypedQuery<PurchaseEntity> findQuery = entityManager.createQuery(
                 queryString.toString(), PurchaseEntity.class);

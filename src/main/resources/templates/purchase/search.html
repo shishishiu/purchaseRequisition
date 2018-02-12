@@ -6,11 +6,11 @@
 </head>
 <body>
 
-	<script src="/js/purchase/search.js"></script>
+	<script th:src="@{/js/purchase/search.js}"></script>
 	<div class="container">
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
-        <form action="/purchase/search" th:action="@{/purchase/search}" method="post" id="searchForm" th:object="${purchaseCriteriaForm}">
+        <form action="/search" th:action="@{search}" method="post" id="searchForm" th:object="${purchaseCriteriaForm}">
          <div class="containerShadow">
          
            	<div class="item">
@@ -46,7 +46,7 @@
 
 	
 		<div style="text-align: right">
-			<a href="/purchase/add" title="new requisicion"><i class="material-icons">add</i></a>
+			<a th:href="@{/purchase/eheader/{purchaseId}(purchaseId=0)}" title="new requisicion"><i class="material-icons">add</i></a>
 		</div>
 		<div style="text-align: right">
 			Total: <span th:text="${#lists.size(list)}"></span>

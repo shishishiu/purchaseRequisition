@@ -1,6 +1,8 @@
-function back(){
-	document.getElementById("detailForm").action = "back"
+function editItem(purchaseItemId){
+	$("#purchaseItemId").val(purchaseItemId);
+	document.getElementById("detailForm").action="eitem";
 	document.getElementById("detailForm").submit();
+	
 }
 function deleteItem(purchaseItemId){
 	

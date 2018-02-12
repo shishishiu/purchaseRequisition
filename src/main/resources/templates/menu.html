@@ -9,8 +9,8 @@
 	<h1 th:inline="text">Menu</h1>
 	
 	<ol>
-		<li><a href="/purchase/search">Buscar Requisición de Compra</a></li>
-		<li><a href="/purchase/crear">Crear Nuevo Requisición de Compra</a></li>
+		<li><a href="purchase/search">Buscar Requisición de Compra</a></li>
+		<li><a href="purchase/crear">Crear Nuevo Requisición de Compra</a></li>
 		
 		<span sec:authorize="hasAuthority('ROLE_ADMIN')">
 		<li><a href="/admin/usuario">Buscar Usuario</a></li>

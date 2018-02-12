@@ -6,15 +6,15 @@
 </head>
 <body>
 
-	<script src="/js/purchase/detail.js"></script>
+	<script th:src="@{/js/purchase/detail.js}"></script>
 	<div class="container">
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
 
-        <form action="/purchase/detail" th:action="@{/purchase/detail}" method="post" id="detailForm" th:object="${form}">
+        <form action="/purchase/detail" th:action="@{detail}" method="post" id="detailForm" th:object="${form}">
 
         	<div>
-        		<a href="javascript:void(0)" onclick="back()" title="regresar">
+        		<a href="javascript:void(0)" th:href="@{./back}" title="regresar">
         			<i class="material-icons">navigate_before</i>
         		</a>
         	</div>
@@ -23,10 +23,13 @@
          	
          	<div th:if="*{isDelivered == 0}" class="messageLine">
          		<label>YA SE ENTREGÓ EN EL </label>
-         		<input type="text" name="deliveredDate" id="deliveredDate" th:value="*{deliveredDate}" class="datepicker" placeholder="yyyy-mm-dd"/>
+         		<input type="text" name="deliveredDate" id="deliveredDate" th:value="${dForm.deliveredDate}" class="datepicker" placeholder="yyyy-mm-dd"/>
          		<a href="javascript:void(0)" onclick="saveDeliverdDate()" title="save"><i class="material-icons">done_all</i></a>
+				<label th:if="${#fields.hasErrors('${dForm.deliveredDate}')}" th:errors="${dForm.deliveredDate}" class="errMessage">error</label>
          	</div>
-         	<div th:if="*{isDelivered == 1}" class="messageLine message">YA SE ENTREGÓ. FECHA DE ENTREGA: <span style="font-weight: bold;" th:text="*{deliveredDate}"></span></div>
+         	<div th:if="*{isDelivered == 1}" class="messageLine message">
+         		YA SE ENTREGÓ. FECHA DE ENTREGA: <span style="font-weight: bold;" th:text="*{deliveredDate}"></span>
+         	</div>
 
 
          	<div style="text-align: right" th:if="*{isDelivered == 0}">
@@ -66,7 +69,7 @@
         	</div>
         	<div class="container">
 	        	<div style="text-align: right" th:if="*{isDelivered == 0}">
-	        		<a th:href="@{/purchase/addItem/{purchaseId}(purchaseId=*{purchaseId})}" title="new item"><i class="material-icons">add</i></a>
+	        		<a href="javascript:void(0)" th:onclick="${'editItem(0)'}"  title="new item"><i class="material-icons">add</i></a>
 	        	</div>
         	<table>       	
         		<thead>
@@ -95,7 +98,7 @@
 	              		<td class="textCenter" th:text="${item.totalPrice}"></td>
 	              		<td class="textCenter" th:text="${item.currency}"></td>
 						<td class="textCenter" th:if="*{isDelivered == 0}">
-							<a href="javascript:void(0)" th:href="@{/purchase/eitem/{purchaseItemId}(purchaseItemId=${item.purchaseItemId})}" title="edit"><i class="material-icons">mode_edit</i></a>
+							<a href="javascript:void(0)" th:onclick="${'editItem(' + item.purchaseItemId + ')'}" title="edit"><i class="material-icons">mode_edit</i></a>
 							&nbsp;&nbsp;&nbsp;
 							<a href="javascript:void(0)" th:onclick="${'deleteItem(' + item.purchaseItemId + ')'}" title="delete"><i class="material-icons">delete</i></a>
 						</td>
