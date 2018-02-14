@@ -6,23 +6,33 @@
 </head>
 <body>
 
-	<script src="/js/usuario/buscar.js"></script>
+	<script th:src="@{/js/user/search.js}"></script>
 	<div class="container">
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
 
-		<h2>Buscar Usuario</h2>
 
-        <form action="/admin/usuario/buscar" th:action="@{/admin/usuario/buscar}" method="post" id="buscarForm">
-          <div>
-            <input type="text" name="keyword" id="keyword" th:placeholder="#{common.texto.buscar}" th:value="${keyword}"/>
-            <a href="javascript:void(0)" onclick="buscar()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
-            <a href="/admin/usuario/add" title="new usuario"><i class="material-icons">add</i></a>
-			<a href="javascript:void(0)" onclick="dl()" title="file download"><i class="material-icons">file_download</i></a>
-          </div>
+        <form action="/search" th:action="@{search}" method="post" id="searchForm" th:object="${userCriteriaForm}">
+        
+	        <div class="containerShadow">
+         
+	           	<div class="item">
+			        <input type="text" name="keyword" id="keyword" th:placeholder="#{common.texto.buscar}" th:value="${keyword}"/>			    	
+			    </div>
+         
+	            <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
+	            &nbsp;<a href="javascript:void(0)" onclick="clearCondition()" th:title="clear"><i class="material-icons">clear</i></a>
+	         </div>
+
+			<div style="text-align: right">
+				<a href="javascript:void(0)" onclick="editUser()" title="new requisicion"><i class="material-icons">add</i></a>
+			</div>
         </form>
 
 	
+		<div style="text-align: right">
+			Total: <span th:text="${#lists.size(list)}"></span>
+		</div>
 		<div class="row">
 	        <table class="table">
 	          <thead>

@@ -2,9 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
-<div style="margin:3px;width:98%;text-align: right" th:fragment="loginInfo">
+<div th:fragment="loginInfo">
+	<div style="float:right;margin:3px 3px 0 0;text-align: right">
 	<span sec:authentication="principal.userId"></span> <span sec:authentication="principal.username"></span>
 	<span sec:authentication="principal.authorities"></span>
+	<form th:action="@{/logout}" method="post" name="signout">
+   		<a href="javascript:void(0)" onclick="javascript:signout.submit();return false;" th:text="#{common.boton.terminar_sesion}"></a>
+	</form>
+	</div>
 </div>
 </body>
 </html>

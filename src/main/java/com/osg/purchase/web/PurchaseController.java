@@ -84,11 +84,12 @@ public class PurchaseController {
     	  });
 
     @RequestMapping(value="/search", method=RequestMethod.GET)
-    public ModelAndView index(SessionStatus sessionStatus) {
+    public ModelAndView index(SessionStatus sessionStatus, @ModelAttribute MemberEntity loggedInUser) {
 		
 		sessionStatus.setComplete();
 		
 		PurchaseCriteriaForm form = new PurchaseCriteriaForm();
+		form.setSolicitanteId(loggedInUser.getUserId());
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("isDeliveredItems", IS_DELIVERED_ITEMS);
 		mv.addObject("purchaseCriteriaForm", form);
@@ -133,24 +134,22 @@ public class PurchaseController {
     
 
 	@RequestMapping(value="/{purchaseId}", method=RequestMethod.GET)
-    public ModelAndView showDetail(@PathVariable("purchaseId") int purchaseId) {
+    public ModelAndView showDetail(@PathVariable("purchaseId") int purchaseId, @ModelAttribute MemberEntity loggedInUser) {
     	
     	ModelAndView mv = new ModelAndView();
 
     	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
     	setPurchase(entity, mv);
 
-    	if(entity.getIsDelivered()==0) {
-    		mv.addObject("dForm",new PurchaseHeaderDeliveredDateForm());
-    	}
+    	mv.addObject("loggedinUser", loggedInUser.getUserId());
     	
     	mv.setViewName("purchase/detail");
 
 		return mv;
     }
 
-	@RequestMapping(value="/eheader/{purchaseId}", method=RequestMethod.GET)
-    public ModelAndView editHeader(@PathVariable("purchaseId") int purchaseId, @ModelAttribute MemberEntity loggedInUser,
+	@RequestMapping(value="/eheader", method=RequestMethod.POST)
+    public ModelAndView editHeader(@RequestParam("purchaseId") int purchaseId, @ModelAttribute MemberEntity loggedInUser,
     		@ModelAttribute("sessionPurchaseHeaderEditForm")PurchaseHeaderEditForm purchaseHeaderEditForm) {
     	
     	ModelAndView mv = new ModelAndView();
@@ -183,8 +182,8 @@ public class PurchaseController {
 		return mv;
     }
 
-	@RequestMapping(value="/eheader/{purchaseId}", method=RequestMethod.POST)
-    public ModelAndView saveHeader(@PathVariable("purchaseId") int purchaseId, 
+	@RequestMapping(value="/saveHeader", method=RequestMethod.POST)
+    public ModelAndView saveHeader(@RequestParam("purchaseId") int purchaseId, 
     		@ModelAttribute("form") @Valid PurchaseHeaderEditForm form, 
     		BindingResult result, @ModelAttribute MemberEntity loggedInUser, Model model) {
     	
@@ -392,7 +391,7 @@ public class PurchaseController {
 	@RequestMapping(value="/dl", method=RequestMethod.POST)
     public ModelAndView dl(@RequestParam("purchaseId") int purchaseId) {
 
-        String filepathImg = "static/excel/logo.jpg";
+        String filepathImg = "static/image/logo.jpg";
         Resource resourceimg = resourceLoader.getResource("classpath:" + filepathImg);
         File fileImg = null;
         try
@@ -428,16 +427,22 @@ public class PurchaseController {
     	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);    	
       
         if (result.hasErrors()) {
+        	mv.addObject("form", entity);
+        	 
+           	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
+        	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
+        	mv.addObject("itemList", list);
+        	
         		
         } else{
 
 	    	entity.setDeliveredDate(deliveredDate);
 	    	entity.setIsDelivered(1);
 	    	purchaseService.updatePurchaseHeader(entity, loggedInUser.getUserId());
+	    	setPurchase(entity, mv);	      
         
         }
 
-    	setPurchase(entity, mv);	      
     	return mv;
 
 	}
@@ -459,6 +464,11 @@ public class PurchaseController {
        	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
     	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
     	mv.addObject("itemList", list);
+    	
+    	if(entity.getIsDelivered()==0) {
+    		mv.addObject("dForm",new PurchaseHeaderDeliveredDateForm());
+    	}
+
 		
 	}
 

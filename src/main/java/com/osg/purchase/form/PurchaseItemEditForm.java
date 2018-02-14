@@ -18,8 +18,11 @@ public class PurchaseItemEditForm implements Serializable{
 	private String username;
 	@Min(value=1, message="{err.msg.requerido}")
  	private int quantity;
+	@Size(min=1, message="{err.msg.requerido}")
  	private String unit;
+	@Size(min=1, message="{err.msg.requerido}")
     private String productName;
+	@Size(min=1, message="{err.msg.requerido}")
     private String brand;
     @Size(max = 255, message="{err.msg.size.max}")
     private String note;

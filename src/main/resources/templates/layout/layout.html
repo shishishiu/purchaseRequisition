@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:fragment="header">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
   <title>Requisición de Compra</title>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
@@ -12,21 +13,22 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
   <script th:src="@{/js/common.js}"></script>
 </head>
 <body>
+	<div th:include="layout/loginInfo :: loginInfo"></div>
+	<div th:include="layout/header::naviBar"></div>
+	
+	<div id="content" class="clearfix">
 
-<div th:fragment="naviBar">
-	<div style="width:25%;vertical-align: middle">
-		<img th:src="@{/image/logo.jpg}"/>
-		<div style="color:gray;font-weight: bold;font-size:25px;float:right;margin-top: 3%">Requisición de Compra</div>
+		<div class="container">
+
+			<div layout:fragment="content">content!</div>
+
+		</div>
+
 	</div>
-	<nav>
-	  <ul>
-	    <li>Requisición</li>
-	    <li>Usuario</li>
-	  </ul>
-	</nav>
 
-</div>
+	
 
+  	<div th:include="layout/footer :: copy"></div>
 
 </body>
 </html>

@@ -21,7 +21,7 @@
         
         	<div class="container">
          	
-         	<div th:if="*{isDelivered == 0}" class="messageLine">
+         	<div th:if="*{isDelivered} == 0 and *{member.userId} == ${loggedinUser}" class="messageLine">
          		<label>YA SE ENTREGÓ EN EL </label>
          		<input type="text" name="deliveredDate" id="deliveredDate" th:value="${dForm.deliveredDate}" class="datepicker" placeholder="yyyy-mm-dd"/>
          		<a href="javascript:void(0)" onclick="saveDeliverdDate()" title="save"><i class="material-icons">done_all</i></a>
@@ -32,8 +32,8 @@
          	</div>
 
 
-         	<div style="text-align: right" th:if="*{isDelivered == 0}">
-         		<a href="javascript:void(0)" th:href="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" title="modificar descripción general">
+         	<div style="text-align: right" th:if="*{isDelivered} == 0 and *{member.userId} == ${loggedinUser}">
+         		<a href="javascript:void(0)" onclick="editHeader()" title="modificar descripción general">
          			<i class="material-icons">mode_edit</i>
          		</a>
          		<a href="javascript:void(0)" onclick="dl()" title="download"><i class="material-icons">file_download</i></a>
@@ -46,15 +46,15 @@
         	<table class="parent">
         		<thead>
         			<tr>
-        				<th>Id del Requisición</th>
-        				<th>Id del Solicitante</th>
-			            <th>Machine No</th>
-        				<th>Fecha Material Solicitado</th>
-			            <th>Posible Fecha de Entrega</th>
-			            <th>Nacional o Importado</th>
-			            <th>Compañía</th>
+        				<th th:utext="#{mstPurchases.purchaseId}"></th>
+        				<th th:utext="#{mstUser.username}"></th>
+			            <th th:utext="#{mstPurchases.machineNo}"></th>
+        				<th th:utext="#{mstPurchases.applicatedAt}"></th>
+			            <th th:utext="#{mstPurchases.deliveryDate}"></th>
+			            <th th:utext="#{mstPurchases.isDomestic}"></th>
+			            <th th:utext="#{mstPurchases.company}"></th>
         			</tr>
-					<tr th:with="rowcolor =(*{isNearDeliveryDate == true and isDelivered == 0} ? 'alert' : '')" th:class="${rowcolor}">
+					<tr th:with="rowcolor =*{styleColor}" th:class="${rowcolor}">
 						<td class="textCenter" th:text="*{purchaseId}"></td>
 						<td class="textCenter" th:text="*{userId} + ' ' + *{member.username}"></td>
 						<td class="textCenter" th:text="*{machineNo}"></td>
@@ -68,41 +68,41 @@
         	
         	</div>
         	<div class="container">
-	        	<div style="text-align: right" th:if="*{isDelivered == 0}">
+	        	<div style="text-align: right" th:if="*{isDelivered} == 0 and *{member.userId} == ${loggedinUser}">
 	        		<a href="javascript:void(0)" th:onclick="${'editItem(0)'}"  title="new item"><i class="material-icons">add</i></a>
 	        	</div>
         	<table>       	
         		<thead>
         			<tr>
         				<th>No</th>
-        				<th>Cantidad</th>
-        				<th>Unidad</th>
-			            <th>Product Name</th>
-			            <th>Brand</th>
-			            <th>Nota</th>
-			            <th>Área de Aplicación</th>
-			            <th>Unit Price</th>
-			            <th>Total Price</th>
-			            <th>Currency</th>
+			            <th th:utext="#{mstPurchasesItems.productName}"></th>
+			            <th th:utext="#{mstPurchasesItems.note}"></th>
+			            <th th:utext="#{mstPurchasesItems.brand}"></th>
+        				<th th:utext="#{mstPurchasesItems.quantity}"></th>
+        				<th th:utext="#{mstPurchasesItems.unit}"></th>
+			            <th th:utext="#{mstPurchasesItems.unitPrice}"></th>
+			            <th th:utext="#{mstPurchasesItems.totalPrice}"></th>
+			            <th th:utext="#{mstPurchasesItems.currency}"></th>
+			            <th th:utext="#{mstPurchasesItems.applicationArea}"></th>
  			            <th></th>
         			</tr>
 					<tr th:each="item,iterStat : ${itemList}" class="data">
 						<td class="textCenter" th:text="${iterStat.count}"></td>
+	              		<td class="textCenter" th:text="${item.productName}"></td>
+	              		<td class="textCenter" th:text="${item.note}"></td>
+	              		<td class="textCenter" th:text="${item.brand}"></td>
 	              		<td class="textCenter" th:text="${item.quantity}"></td>
 	              		<td class="textCenter" th:text="${item.unit}"></td>
-	              		<td class="textCenter" th:text="${item.productName}"></td>
-	              		<td class="textCenter" th:text="${item.brand}"></td>
-	              		<td class="textCenter" th:text="${item.note}"></td>
-	              		<td class="textCenter" th:text="${item.applicationArea}"></td>
 	              		<td class="textCenter" th:text="${item.unitPrice}"></td>
 	              		<td class="textCenter" th:text="${item.totalPrice}"></td>
 	              		<td class="textCenter" th:text="${item.currency}"></td>
-						<td class="textCenter" th:if="*{isDelivered == 0}">
+	              		<td class="textCenter" th:text="${item.applicationArea}"></td>
+						<td class="textCenter" th:if="*{isDelivered} == 0 and *{member.userId} == ${loggedinUser}">
 							<a href="javascript:void(0)" th:onclick="${'editItem(' + item.purchaseItemId + ')'}" title="edit"><i class="material-icons">mode_edit</i></a>
 							&nbsp;&nbsp;&nbsp;
 							<a href="javascript:void(0)" th:onclick="${'deleteItem(' + item.purchaseItemId + ')'}" title="delete"><i class="material-icons">delete</i></a>
 						</td>
-						<td class="textCenter" th:if="*{isDelivered == 1}">
+						<td class="textCenter" th:if="*{member.userId} != ${loggedinUser} or *{isDelivered} == 1">
 							<i class="material-icons">mode_edit</i>&nbsp;&nbsp;&nbsp;<i class="material-icons">delete</i>
 						</td>
 					</tr>

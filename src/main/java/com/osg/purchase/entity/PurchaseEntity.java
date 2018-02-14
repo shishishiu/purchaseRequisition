@@ -36,7 +36,7 @@ public class PurchaseEntity implements Serializable {
     private MemberEntity member;
 
 	@Transient
-	private final int DAYS_UNTIL_DELIVERY_DATE = 5;
+	private final int DAYS_UNTIL_DELIVERY_DATE = 7;
 	public enum IsDomesticValue implements EnumInterface {
 		NATIONAL(1, "National"),
 	    IMPORTADO(2, "Importado");
@@ -289,7 +289,49 @@ public class PurchaseEntity implements Serializable {
 			e.printStackTrace();
 		}
 		
-		return DateUtils.SubtractDates(dateFrom, dateTo) <= DAYS_UNTIL_DELIVERY_DATE;
+		long dateDiff = DateUtils.SubtractDates(dateFrom, dateTo);
+		
+		return dateDiff < DAYS_UNTIL_DELIVERY_DATE && dateDiff >= 0;
 				
 	}
+	
+	public boolean getIsOrHasPassedDeliveryDate() {
+		
+		Date dateTo = new Date();
+		Date dateFrom = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try {
+			dateTo = sdf.parse(this.deliveryDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		long dateDiff = DateUtils.SubtractDates(dateFrom, dateTo);
+		
+		return dateDiff < 0;
+				
+	}
+	
+	public String getStyleColor() {
+		
+		if(isDelivered==0) {
+			
+			if(getIsNearDeliveryDate()) {
+				
+				return "alertYellow";
+				
+			} else if(getIsOrHasPassedDeliveryDate()) {
+				
+				return "alertRed";
+			} else {
+				return "";
+			}
+			
+		} else {
+			return "";
+					
+		}
+	}
+
 }

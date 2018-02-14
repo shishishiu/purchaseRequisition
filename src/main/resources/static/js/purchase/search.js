@@ -3,6 +3,11 @@ $(function(){
 	setApplicatedAt();
 	setDeliveryDate();
 
+	$(".condition").keypress(function( event ) {
+		  if ( event.which == 13 ) {
+			  searchPurchase();
+		  }
+	})
 }) 
 
 function setDeliveryDate(){
@@ -68,4 +73,10 @@ function clearCondition(){
 	$( "input[name='checkIsDelivered']" ).prop("checked",false);
 	$( "input[name='checkIsDelivered']" )[0].checked = true;
 
+}
+function editHeader(){
+	$("#purchaseId").val(0);
+	document.getElementById("searchForm").action="eheader";
+	document.getElementById("searchForm").submit();
+	
 }

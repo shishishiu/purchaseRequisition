@@ -36,8 +36,8 @@ import com.osg.purchase.repository.MemberRepository;
 import com.osg.purchase.repository.DepartmentRepository;
 
 @Controller
-@RequestMapping("/admin/usuario")
-public class UsuarioController {
+@RequestMapping("/admin/user")
+public class UserController {
 
 	@Autowired
 	MemberRepository memberRepository;
@@ -46,19 +46,19 @@ public class UsuarioController {
 	
     @RequestMapping("")
     public String index() {
-        return "usuario/buscar";
+        return "user/search";
     }
 
-    @RequestMapping(value="/buscar", method=RequestMethod.GET)
+    @RequestMapping(value="/search", method=RequestMethod.GET)
     public String index2() {
-        return "usuario/buscar";
+        return "user/search";
     }
 
-    @RequestMapping(value="/buscar", method=RequestMethod.POST)
+    @RequestMapping(value="/search", method=RequestMethod.POST)
     public ModelAndView search(String keyword, HttpServletRequest request) {
     	
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("usuario/buscar");
+        mv.setViewName("user/search");
         
         if (StringUtils.isNotEmpty(keyword)) {
         	mv = mostrarList(mv, keyword);

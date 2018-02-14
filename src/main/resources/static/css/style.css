@@ -10,7 +10,6 @@ BODY
 }
 div.container{
     padding: 0.5em 1em;
-    margin: 2em 0;
 }
 div.containerShadow{
     padding: 0.5em 1em;
@@ -86,8 +85,11 @@ th {
     text-align:center;
 }
 
-tr.alert{
+tr.alertRed{
 	background-color: #fa8c87;
+}
+tr.alertYellow{
+	background-color: #fafa85;
 }
 
 table.parent th{background-color: #7FAACE; color:white;}
@@ -130,4 +132,29 @@ div.item label.item, input.item, select.item{
 }
 .errorField {
   background-color: #ff8080;
+}
+nav{
+    width: 100%;
+    margin-bottom: 5px;
+    overflow: hidden;
+    background-color: #00559d;
+    color: white;
+}
+nav ul{
+    width: 60%;
+    margin-left: 20%;
+}
+nav li{
+    width: calc(25% - 2px);
+    text-align: center;
+    float: left;
+}
+nav a{
+    text-decoration: none;
+    color:white;
+    font-size: 110%;
+}
+nav a:hover{
+    color: white;
+    transition: 0.5s;
 }

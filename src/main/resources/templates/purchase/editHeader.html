@@ -11,17 +11,17 @@
 		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
 
-        <form th:action="@{/purchase/eheader/{purchaseId}(purchaseId=*{purchaseId})}" method="post" id="editHeaderForm" th:object="${form}"
+        <form th:action="@{saveHeader}" method="post" id="editHeaderForm" th:object="${form}"
         class="center">
 
 		
         	<div>
-        		<div th:if="${purchaseId le 0}">
-	         		<a href="javascript:void(0)" th:href="@{../back}" title="regresar">
+        		<div th:if="*{purchaseId le 0}">
+	         		<a href="javascript:void(0)" th:href="@{back}" title="regresar">
 	        			<i class="material-icons">navigate_before</i>
 	        		</a>
         		</div>
-        		<div th:unless="${purchaseId le 0}">
+        		<div th:unless="*{purchaseId le 0}">
 	         		<a href="javascript:void(0)" th:href="@{/purchase/{purchaseId}(purchaseId=*{purchaseId})}" title="regresar">
 	        			<i class="material-icons">navigate_before</i>
 	        		</a>
@@ -31,30 +31,30 @@
 			<div class="containerShadow">
 
         	<div class="item">
-		        <label class="label">Id del Requisición</label>
+		        <label class="label" th:utext="#{mstPurchases.purchaseId}"></label>
 		        <label class="item" th:text="*{purchaseId}"></label>
 		    </div>
         	<div class="item">
-		        <label class="label">Solicitante</label>
+		        <label class="label" th:utext="#{mstUser.username}"></label>
 		        <label class="item" th:text="*{userId} + ' ' + *{username}"></label>
 		    </div>
         	<div class="item">
-		        <label class="label">Machine No</label>
+		        <label class="label" th:utext="#{mstPurchases.machineNo}"></label>
 				<input autofocus="autofocus" class="item" type="text" id="machineNo" name="machineNo" th:field="*{machineNo}" th:errorclass="errorField"/>
 				<label th:if="${#fields.hasErrors('machineNo')}" th:errors="*{machineNo}" class="errMessage">error</label>
 		    </div>
         	<div class="item">
-		        <label class="label">Fecha Material Solicitado</label>
+		        <label class="label" th:utext="#{mstPurchases.applicatedAt}"></label>
 				<input class="item datepicker" type="text" id="applicatedAt" name="applicatedAt" placeholder="yyyy-mm-dd" th:field="*{applicatedAt}" th:errorclass="errorField"/>
 				<label th:if="${#fields.hasErrors('applicatedAt')}" th:errors="*{applicatedAt}" class="errMessage">error</label>
 		    </div>
         	<div class="item">
-		        <label class="label">Posible Fecha de Entrega</label>
+		        <label class="label" th:utext="#{mstPurchases.deliveryDate}"></label>
 				<input class="item datepicker" type="text" id="deliveryDate" name="deliveryDate" placeholder="yyyy-mm-dd" th:field="*{deliveryDate}" th:errorclass="errorField"/>
 				<label th:if="${#fields.hasErrors('deliveryDate')}" th:errors="*{deliveryDate}" class="errMessage">error</label>
 		    </div>
         	<div class="item">
-		        <label class="label">Nacional o Importado</label>
+		        <label class="label" th:utext="#{mstPurchases.isDomestic}"></label>
 				<select th:class="item" id="isDomestic" name="isDomestic" th:errorclass="errorField">
 	            	<option value="0">---</option>
 	            	<option th:each="isDomestic : ${isDomesticList}" th:value="${isDomestic.code}" th:text="${isDomestic.value}" th:selected="${isDomestic.code} == *{isDomestic}">pulldown</option>
@@ -62,7 +62,7 @@
 				<label th:if="${#fields.hasErrors('isDomestic')}" th:errors="*{isDomestic}" class="errMessage">error</label>
 		    </div>
         	<div class="item">
-		        <label class="label">Compañía</label>
+		        <label class="label" th:utext="#{mstPurchases.company}"></label>
 				<select th:class="item" id="company" name="company" th:errorclass="errorField">
 	            	<option value="0">---</option>
 	            	<option th:each="company : ${companyList}" th:value="${company.code}" th:text="${company.value}" th:selected="${company.code} == *{company}">pulldown</option>

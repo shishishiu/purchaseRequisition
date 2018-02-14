@@ -1,3 +1,8 @@
+function editHeader(){
+	document.getElementById("detailForm").action="eheader";
+	document.getElementById("detailForm").submit();
+	
+}
 function editItem(purchaseItemId){
 	$("#purchaseItemId").val(purchaseItemId);
 	document.getElementById("detailForm").action="eitem";

@@ -48,6 +48,4 @@ public class AutentificaController {
         return "login";
     }
 
-
-
 }

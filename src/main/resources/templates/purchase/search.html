@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="layout/header :: header">
-	<title>Web Page</title>
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="./layout/layout">
+<!-- <head th:include="layout/header :: header">-->
+<head>
 </head>
 <body>
 
 	<script th:src="@{/js/purchase/search.js}"></script>
+	<!-- <div th:replace="layout/LoginInfo :: loginInfo"></div>
+	<div th:replace="layout/header :: naviBar"></div> -->
+	<div layout:fragment="content">
+	
 	<div class="container">
-		<div th:replace="layout/loginInfo :: loginInfo"></div>
 
         <form action="/search" th:action="@{search}" method="post" id="searchForm" th:object="${purchaseCriteriaForm}">
          <div class="containerShadow">
          
            	<div class="item">
-		        <label class="label">Requisición No.</label>
+		        <label class="label" th:utext="#{mstPurchases.purchaseId}"></label>
 		        <input type="text" name="pId" id="pId" th:value="*{pId}" class="condition" autofocus="autofocus"/>
 
-		        <label class="label">Id de Solicitante</label>
+		        <label class="label" th:utext="#{mstUser.loginId}"></label>
 		        <input type="text" name="solicitanteId" id="solicitanteId" th:value="*{solicitanteId}" class="condition"/>
 
-		        <label class="label">Fecha de Material Solicitado</label>
+		        <label class="label" th:utext="#{mstPurchases.applicatedAt}"></label>
 		        <input type="text" name="applicatedAtFrom" id="applicatedAtFrom" th:value="*{applicatedAtFrom}" class="condition datepicker" placeholder="yyyy-mm-dd"/>
 		        &nbsp;-&nbsp;
 		        <input type="text" name="applicatedAtTo" id="applicatedAtTo" th:value="*{applicatedAtTo}" class="condition datepicker" placeholder="yyyy-mm-dd"/> 
 
-		        <label class="label">Posible Fecha de Entrega</label>
+		        <label class="label" th:utext="#{mstPurchases.deliveryDate}"></label>
 		        <input type="text" name="deliveryDateFrom" id="deliveryDateFrom" th:value="*{deliveryDateFrom}" class="condition datepicker" placeholder="yyyy-mm-dd"/>
 		        &nbsp;-&nbsp;
 		        <input type="text" name="deliveryDateTo" id="deliveryDateTo" th:value="*{deliveryDateTo}" class="condition datepicker" placeholder="yyyy-mm-dd"/> 
@@ -33,7 +38,7 @@
 		    	
 		    	<div th:each="item : ${isDeliveredItems}" style="display:inline">
               		<label>
-                	<input type="checkbox" name="checkIsDelivered" th:value="${item.value}" th:text="${item.key}" th:field="*{checkIsDelivered}">checkbox</input>
+                	<input type="checkbox" name="checkIsDelivered" th:value="${item.value}" th:text="${item.key}" th:field="*{checkIsDelivered}" class="condition" >checkbox</input>
               		</label>
             	</div>
 		    	
@@ -42,33 +47,35 @@
             <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
             &nbsp;<a href="javascript:void(0)" onclick="clearCondition()" th:title="clear"><i class="material-icons">clear</i></a>
          </div>
+         
+		<div style="text-align: right">
+			<a href="javascript:void(0)" onclick="editHeader()" title="new requisicion"><i class="material-icons">add</i></a>
+		</div>
+         <input type="hidden" name="purchaseId" id="purchaseId" />
         </form>
 
 	
 		<div style="text-align: right">
-			<a th:href="@{/purchase/eheader/{purchaseId}(purchaseId=0)}" title="new requisicion"><i class="material-icons">add</i></a>
-		</div>
-		<div style="text-align: right">
 			Total: <span th:text="${#lists.size(list)}"></span>
 		</div>
 		<div class="row">
-	        <table class="table">
+	        <table class="parent">
 	          <thead>
 	            <tr>
 		          <th>No</th>
-		          <th>Requisición No</th>
-	              <th>Nombre de Solicitante</th>
-	              <th>Machine No</th>
-	              <th>Fecha Material Solicitado</th>
-	              <th>Posible Fecha de Entrega</th>
-	              <th>Nacional o Importado</th>
-	              <th>Compañía</th>
+		          <th th:utext="#{mstPurchases.purchaseId}"></th>
+	              <th th:utext="#{mstUser.username}"></th>
+	              <th th:utext="#{mstPurchases.machineNo}"></th>
+	              <th th:utext="#{mstPurchases.applicatedAt}"></th>
+	              <th th:utext="#{mstPurchases.deliveryDate}"></th>
+	              <th th:utext="#{mstPurchases.isDomestic}"></th>
+	              <th th:utext="#{mstPurchases.company}"></th>
 	              <th></th>
 	            </tr>
 	          </thead>
 	          <tbody>
 	            <tr th:each="item,iterStat : ${list}" 
-	            th:with="rowcolor =(${item.isNearDeliveryDate == true and item.isDelivered == 0} ? 'alert' : '')"
+	            th:with="rowcolor =${item.styleColor}"
 	            th:class="${rowcolor}">
 	              <td class="textCenter"><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
 	              <td class="textCenter" th:text="${item.purchaseId}"></td>
@@ -78,7 +85,7 @@
 	              <td class="textCenter" th:text="${item.deliveryDate}"></td>
 	              <td class="textCenter" th:text="${item.isDomesticValue}"></td>
 	              <td class="textCenter" th:text="${item.companyValue}"></td>
-	              <td class="textCenter" th:if="${item.isDelivered == 1}"><i class="material-icons">done</i></td>
+	              <td class="textCenter" th:if="${item.isDelivered == 1}" title="Ya se entregó"><i class="material-icons">done</i></td>
 	              <td class="textCenter" th:if="${item.isDelivered == 0}"></td>
 	              
 	            </tr>
@@ -86,8 +93,8 @@
 	        </table>
 		</div>
 	</div>
-
-  	<div th:include="layout/footer :: copy" th:fragment="containerFooter"></div>
+</div>
+  	<!-- <div th:include="layout/footer :: copy" th:fragment="containerFooter"></div> -->
 
 </body>
 </html>
