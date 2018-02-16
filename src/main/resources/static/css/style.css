@@ -133,14 +133,15 @@ div.item label.item, input.item, select.item{
 .errorField {
   background-color: #ff8080;
 }
-nav{
+div.navi{
     width: 100%;
+    height: 45px;
     margin-bottom: 5px;
-    overflow: hidden;
     background-color: #00559d;
     color: white;
+    
 }
-nav ul{
+/*nav ul{
     width: 60%;
     margin-left: 20%;
 }
@@ -157,4 +158,4 @@ nav a{
 nav a:hover{
     color: white;
     transition: 0.5s;
-}
+}*/

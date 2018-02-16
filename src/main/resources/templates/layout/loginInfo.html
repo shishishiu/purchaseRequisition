@@ -3,12 +3,12 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
 <div th:fragment="loginInfo">
-	<div style="float:right;margin:3px 3px 0 0;text-align: right">
+	<div style="float:right;margin:20px 3px 0 0;text-align: right">
 	<span sec:authentication="principal.userId"></span> <span sec:authentication="principal.username"></span>
 	<span sec:authentication="principal.authorities"></span>
-	<form th:action="@{/logout}" method="post" name="signout">
-   		<a href="javascript:void(0)" onclick="javascript:signout.submit();return false;" th:text="#{common.boton.terminar_sesion}"></a>
-	</form>
+	</div>
+	<div>
+		<img style="float:right;" th:src="@{/image/tapkun.png}"/>
 	</div>
 </div>
 </body>

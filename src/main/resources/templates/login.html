@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head th:include="layout/header :: header">
-	<title>Web Page</title>
+<head>
+	<title>Requisición de Compra</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script th:src="@{/js/common.js}"></script>
  </head>
 <body>
 
@@ -30,6 +35,5 @@
 		</form>
 		
 	</section>
-  	<div th:include="layout/footer :: copy"></div>
 </body>
 </html>

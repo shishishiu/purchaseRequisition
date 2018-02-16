@@ -210,15 +210,10 @@ public class PurchaseController {
             	
             	purchaseService.updatePurchaseHeader(entity, loggedInUser.getUserId());
             	
-            	PurchaseEntity pentity = purchaseRepository.findByPurchaseId(purchaseId);
-
-            	setPurchase(pentity, mv);
-            	mv.setViewName("purchase/detail");
+            	return showDetail(purchaseId, loggedInUser);
         		
         	}
-        	
-    		return mv;
-        	
+        	        	
         }
         
     }
@@ -314,11 +309,7 @@ public class PurchaseController {
 	            
             } else {
             
-            	PurchaseEntity pe = purchaseRepository.findByPurchaseId(entity.getPurchaseId());
-            	setPurchase(pe, mv);
-            	mv.setViewName("purchase/detail");
-           	
-            	
+            	return showDetail(entity.getPurchaseId(), loggedInUser);
             }
             
             return mv;
@@ -338,14 +329,9 @@ public class PurchaseController {
     public ModelAndView deleteItem(@RequestParam("purchaseId") int purchaseId, 
     		@RequestParam("purchaseItemId")int purchaseItemId, @ModelAttribute MemberEntity loggedInUser) {
     	
-    	ModelAndView mv = new ModelAndView();
-    	
     	purchaseItemService.deleteLogical(loggedInUser.getUserId(), purchaseItemId);
     	
-    	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);
-    	setPurchase(entity, mv);
-    	mv.setViewName("purchase/detail");
-		return mv;
+		return showDetail(purchaseId,loggedInUser);
     }
 
 	/***
@@ -422,28 +408,31 @@ public class PurchaseController {
     		@RequestParam("purchaseId") int purchaseId, 
     		@RequestParam("deliveredDate") String deliveredDate, @ModelAttribute MemberEntity loggedInUser) {
 		
-        ModelAndView mv = new ModelAndView();
-    	mv.setViewName("purchase/detail");
     	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);    	
       
         if (result.hasErrors()) {
+        	
+            ModelAndView mv = new ModelAndView();
+        	mv.setViewName("purchase/detail");
+
         	mv.addObject("form", entity);
         	 
            	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
         	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
         	mv.addObject("itemList", list);
-        	
+        	mv.addObject("loggedinUser", loggedInUser.getUserId());
+
+        	return mv;
         		
         } else{
 
 	    	entity.setDeliveredDate(deliveredDate);
 	    	entity.setIsDelivered(1);
 	    	purchaseService.updatePurchaseHeader(entity, loggedInUser.getUserId());
-	    	setPurchase(entity, mv);	      
-        
-        }
 
-    	return mv;
+        	return showDetail(purchaseId, loggedInUser);
+
+        }
 
 	}
 	/***

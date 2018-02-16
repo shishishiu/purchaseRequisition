@@ -8,10 +8,11 @@
 </head>
 <body>
 
-	<script th:src="@{/js/purchase/search.js}"></script>
 	<!-- <div th:replace="layout/LoginInfo :: loginInfo"></div>
 	<div th:replace="layout/header :: naviBar"></div> -->
 	<div layout:fragment="content">
+
+	<script th:src="@{/js/purchase/search.js}"></script>
 	
 	<div class="container">
 
@@ -59,7 +60,7 @@
 			Total: <span th:text="${#lists.size(list)}"></span>
 		</div>
 		<div class="row">
-	        <table class="parent">
+	        <table class="table">
 	          <thead>
 	            <tr>
 		          <th>No</th>

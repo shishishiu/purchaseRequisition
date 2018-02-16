@@ -22,25 +22,24 @@ public class AutentificaController {
         return "home";
     }
 
-    @RequestMapping("menu")
-    public String admin() {
-        return "menu";
-    }
+//    @RequestMapping("menu")
+//    public String admin() {
+//        return "menu";
+//    }
 
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
+//    @GetMapping("/home")
+//    public String home() {
+//        return "home";
+//    }
 
-    @RequestMapping("/mypage")
-    public String mypage(Principal principal, Model model) {
-		
-    	Authentication authentication = (Authentication) principal;
-		MemberEntity user = (MemberEntity) authentication.getPrincipal();
-				
-		model.addAttribute("user", user);
-      return "myPage";
-    }
+//    public String mypage(Principal principal, Model model) {
+//		
+//    	Authentication authentication = (Authentication) principal;
+//		MemberEntity user = (MemberEntity) authentication.getPrincipal();
+//				
+//		model.addAttribute("user", user);
+//      return "myPage";
+//    }
 
     @GetMapping("/login")
     public String login(Model model) {
