@@ -3,7 +3,6 @@ package com.osg.purchase.entity;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -21,8 +20,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,7 +31,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class MemberEntity implements UserDetails
 {
 	@ManyToOne
-	@JoinColumn(name = "departmentId")
+	@JoinColumn(name = "departmentId", referencedColumnName="id")
 	private DepartmentEntity departmentEntity;
 
     @OneToMany(mappedBy = "member")
@@ -61,10 +58,19 @@ public class MemberEntity implements UserDetails
     private String email;
 
     @Column(nullable = false)
-    private int isDeleted=1;
+    private int isDeleted=0;
+
+    @Column(insertable = false)
+    private Timestamp createdAt;
 
     @Column
-    private Timestamp createdAt;
+    private String createdUserId;
+
+    @Column(insertable = false)
+    private Timestamp updatedAt;
+
+    @Column
+    private String updatedUserId;
 
     public int getId()
    {
@@ -116,6 +122,35 @@ public class MemberEntity implements UserDetails
     public void setIsDeleted(int isDeleted) {
         this.isDeleted = isDeleted;
     }
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+    public Timestamp getCreatedAt()
+   {
+       return this.createdAt;
+   }
+    public void setCreatedUserId(String createdUserId) {
+        this.createdUserId = createdUserId;
+    }
+    public String getCreatedUserId()
+   {
+       return this.createdUserId;
+   }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+    public Timestamp getUpdatedAt()
+   {
+       return this.updatedAt;
+   }
+    public void setUpdatedUserId(String updatedUserId) {
+        this.updatedUserId = updatedUserId;
+    }
+    public String getUpdatedUserId()
+   {
+       return this.updatedUserId;
+   }
 
     @Override
     public boolean isAccountNonExpired()

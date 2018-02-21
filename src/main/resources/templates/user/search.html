@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head th:include="layout/header :: header">
-	<title>Web Page</title>
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="./layout/layout">
+<head>
 </head>
 <body>
 
+	<div layout:fragment="content">
 	<script th:src="@{/js/user/search.js}"></script>
 	<div class="container">
-		<div th:replace="layout/loginInfo :: loginInfo"></div>
-
-
 
         <form action="/search" th:action="@{search}" method="post" id="searchForm" th:object="${userCriteriaForm}">
         
@@ -20,15 +19,15 @@
 			        <input type="text" name="keyword" id="keyword" th:placeholder="#{common.texto.buscar}" th:value="${keyword}"/>			    	
 			    </div>
          
-	            <a href="javascript:void(0)" onclick="searchPurchase()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
+	            <a href="javascript:void(0)" onclick="searchUser()" th:title="#{common.texto.buscar}"><i class="material-icons">search</i></a>
 	            &nbsp;<a href="javascript:void(0)" onclick="clearCondition()" th:title="clear"><i class="material-icons">clear</i></a>
 	         </div>
 
 			<div style="text-align: right">
-				<a href="javascript:void(0)" onclick="editUser()" title="new requisicion"><i class="material-icons">add</i></a>
+				<a href="javascript:void(0)" onclick="edit()" title="new"><i class="material-icons">add</i></a>
 			</div>
+         	<input type="hidden" name="userId" id="userId"/>
         </form>
-
 	
 		<div style="text-align: right">
 			Total: <span th:text="${#lists.size(list)}"></span>
@@ -37,25 +36,29 @@
 	        <table class="table">
 	          <thead>
 	            <tr>
-	              <th th:utext="#{mstUser.loginId}"></th>
-	              <th th:utext="#{mstUser.username}"></th>
-	              <th>&nbsp;</th>
+	  				<th th:utext="#{mstUser.userId}"></th>
+	  				<th th:utext="#{mstUser.username}"></th>
+	  				<th th:utext="#{mstDepartment.departmentName}"></th>
+	  				<th th:utext="#{mstUser.mailAddress}"></th>
+	              	<th>&nbsp;</th>
 	            </tr>
 	          </thead>
 	          <tbody>
 	            <tr th:each="item : ${list}">
-	              <td><a class="btn btn-default" href="/admin/usuario/${item.loginId}" th:href="@{/admin/usuario/{loginId}(loginId=${item.loginId})}" th:text="${item.loginId}">1</a></td>
-	              <td th:text="${item.username}"></td>
-	              <td>
-	                <a class="btn btn-warning" href="javascript:void(0)" th:attr="onclick='deleteUser(\'' + ${item.loginId} + '\');'" title="delete"><i class="material-icons">delete</i></a>
-	              </td>
+	              	<td class="textCenter"><a class="btn btn-default" href="/admin/user/${item.userId}" th:href="@{/admin/user/{userId}(userId=${item.userId})}" th:text="${item.userId}">1</a></td>
+	              	<td th:text="${item.username}"></td>
+	   				<td th:utext="${item.department.departmentName}"></td>
+	   				<td th:utext="${item.email}"></td>
+	              	<td class="textCenter">
+	                	<a class="btn btn-warning" href="javascript:void(0)" th:attr="onclick='deleteUser(\'' + ${item.userId} + '\');'" title="delete"><i class="material-icons">delete</i></a>
+	              	</td>
 	            </tr>
 	          </tbody>
 	        </table>
 		</div>
 	</div>
 
-  	<div th:include="layout/footer :: copy" th:fragment="containerFooter"></div>
+  	</div>
 
 </body>
 </html>

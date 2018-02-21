@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="./layout/layout">
+<head>
+</head>
+<body>
+
+	<div layout:fragment="content">
+	<script th:src="@{/js/user/detail.js}"></script>
+	<div class="container">
+
+        <form action="/user/detail" th:action="@{detail}" method="post" id="detailForm" th:object="${form}">
+
+        	<div>
+        		<a href="javascript:void(0)" th:href="@{./back}" title="regresar">
+        			<i class="material-icons">navigate_before</i>
+        		</a>
+        	</div>
+        
+        	<div class="container">
+         		<div style="text-align: right">
+	         		<a href="javascript:void(0)" onclick="edit()" title="modificar descripción general">
+	         			<i class="material-icons">mode_edit</i>
+	         		</a>
+	         	</div>
+	        	<table class="parent">
+	        		<thead>
+	        			<tr>
+	        				<th th:utext="#{mstUser.userId}"></th>
+	        				<th th:utext="#{mstUser.username}"></th>
+	        				<th th:utext="#{mstDepartment.departmentName}"></th>
+	        				<th th:utext="#{mstUser.mailAddress}"></th>
+	        			</tr>
+						<tr>
+							<td class="textCenter" th:text="*{userId}"></td>
+	        				<td th:utext="*{username}"></td>
+	        				<td th:utext="*{department.departmentName}"></td>
+	        				<td th:utext="*{email}"></td>
+						</tr>
+	        		</thead>       	
+	        	</table>
+        	
+        	</div>
+        	<input type="hidden" name="userId" id="userId" th:field="*{userId}"/>
+        </form>
+
+	</div>
+
+</div>
+</body>
+</html>

@@ -30,6 +30,8 @@ public class DepartmentEntity {
     @Column(nullable = false)
     private int isDeleted;
 
+    private int order;
+    
     public int getId()
    {
        return this.id;
@@ -40,12 +42,23 @@ public class DepartmentEntity {
        return this.departmentId;
    }
 
-    public String getName()
+    public String getDepartmentName()
    {
        return this.departmentName;
    }
 
-    public int getEnable()
+    public void setOrder(int order) {
+        this.order = order;
+    }
+    public int getOrder()
+   {
+       return this.order;
+   }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+    public int getIsDeleted()
    {
        return this.isDeleted;
    }

@@ -15,12 +15,12 @@ public class LoginIdValidator implements ConstraintValidator<LoginIdUnique,Objec
 	MemberRepository memberRepository;
 
 	private String hidId;
-	private String loginId;
+	private String userId;
 	
 	@Override
 	public void initialize(LoginIdUnique annotation) {
-        this.hidId = annotation.fieldHidId();
-        this.loginId = annotation.fieldLoginId();
+		this.hidId = annotation.fieldHidId();
+        this.userId = annotation.fieldUserId();
 	}
 
 	@Override
@@ -28,9 +28,9 @@ public class LoginIdValidator implements ConstraintValidator<LoginIdUnique,Objec
 		
 		BeanWrapper beanWrapper = new BeanWrapperImpl(value);
 		int hidId = (int)beanWrapper.getPropertyValue(this.hidId);
-		String loginId = (String)beanWrapper.getPropertyValue(this.loginId);
+		String userId = (String)beanWrapper.getPropertyValue(this.userId);
 
-		MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(loginId,1);
+		MemberEntity entity = memberRepository.findByUserId(userId);
 		
 
 		if(entity == null){

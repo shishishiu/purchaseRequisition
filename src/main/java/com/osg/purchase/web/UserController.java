@@ -1,38 +1,33 @@
 package com.osg.purchase.web;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.security.Principal;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.osg.purchase.entity.DepartmentEntity;
 import com.osg.purchase.entity.MemberEntity;
-import com.osg.purchase.excel.ExcelBuilder;
-import com.osg.purchase.excel.ExcelBuilderUsuario;
-import com.osg.purchase.form.AddUsuarioForm;
-import com.osg.purchase.form.AutentificaForm;
+import com.osg.purchase.form.UserEditForm;
 import com.osg.purchase.repository.MemberRepository;
+import com.osg.purchase.service.MemberServiceImpl;
 import com.osg.purchase.repository.DepartmentRepository;
 
 @Controller
@@ -43,15 +38,20 @@ public class UserController {
 	MemberRepository memberRepository;
 	@Autowired
 	DepartmentRepository departmentRepository;
+	@Autowired
+	MemberServiceImpl memberService;
 	
-    @RequestMapping("")
-    public String index() {
-        return "user/search";
-    }
+    @RequestMapping(value= {"/search", "/"})
+    public ModelAndView index() {
+    	
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("user/search");
 
-    @RequestMapping(value="/search", method=RequestMethod.GET)
-    public String index2() {
-        return "user/search";
+        List<MemberEntity> list = memberRepository.findAll();
+
+        mv.addObject("list", list);   	
+    	
+        return mv;
     }
 
     @RequestMapping(value="/search", method=RequestMethod.POST)
@@ -60,204 +60,151 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("user/search");
         
-        if (StringUtils.isNotEmpty(keyword)) {
-        	mv = mostrarList(mv, keyword);
+       	mv = mostrarList(mv, keyword);
           
-        	request.getSession().setAttribute("keyword",keyword);
+       	request.getSession().setAttribute("keyword",keyword);
           
-        }
         return mv;
     }
-  
-    @RequestMapping(value="/add", method=RequestMethod.GET)
-    public ModelAndView addIndex(Model model) {
-    	
-    	model.addAttribute("form", new AddUsuarioForm());
-    	ModelAndView mv = new ModelAndView();
-    	
-    	createDepartmentCombo(mv);
-    	
-        mv.setViewName("usuario/add");
-    	
-        return mv;
-   }
 
-	@RequestMapping(value="/add", params = "insert", method=RequestMethod.POST)
-    public ModelAndView addMember(@ModelAttribute("form") @Valid AddUsuarioForm form, BindingResult result) {
-    	
-        ModelAndView mv = new ModelAndView();
-
-        MemberEntity member = new MemberEntity();
-        BeanUtils.copyProperties(form, member);
-
-        if (result.hasErrors()) {
-        
-        	createDepartmentCombo(mv);
-        	mv.setViewName("usuario/add");
-
-        } else{
-        
-        	DepartmentEntity entity = departmentRepository.findByDepartmentName(form.getDepartmentname());
-        	member.setDepartment(entity);
-        	
-	        memberRepository.save(member);
-
-	        mv = mostrarList(mv, member.getUserId());
-
-	        mv.setViewName("usuario/buscar");
-	        
-        }
-        
-        return mv;
-   }
-
-    @RequestMapping(value="/add", params = "update", method=RequestMethod.POST)
-    public ModelAndView updateMember(@ModelAttribute("form") @Valid AddUsuarioForm form, BindingResult result) {
-    	
-        ModelAndView mv = new ModelAndView();
-
-        MemberEntity member = new MemberEntity();
-        BeanUtils.copyProperties(form, member);
-       	member.setId(form.getHidId());
-
-        if (result.hasErrors()) {
-        
-        	createDepartmentCombo(mv);
-        	mv.setViewName("usuario/add");
-
-        } else{
-        
-        	DepartmentEntity depentity = departmentRepository.findByDepartmentName(form.getDepartmentname());
-        	member.setDepartment(depentity);
-         	
-	        memberRepository.save(member);
-
-	        mv = mostrarList(mv, member.getUserId());
-
-	        mv.setViewName("usuario/buscar");
-	        
-        }
-        
-        return mv;
-   }
-
-
-    @RequestMapping(value="/add", params = "back", method=RequestMethod.POST)
-    public ModelAndView backFromAdd(HttpServletRequest request) {
-    	
-        ModelAndView mv = new ModelAndView();
-
-        HttpSession session = request.getSession(false);
-        String keyword = (String)session.getAttribute("keyword");
-        
-        mv = mostrarList(mv, keyword);
-       
-    	mv.setViewName("usuario/buscar");
-
-        return mv;
-   }
-
-    @RequestMapping(value="/edit", params = "back", method=RequestMethod.POST)
-    public ModelAndView backFromEdit(HttpServletRequest request) {
-    	
-        ModelAndView mv = new ModelAndView();
-
-        HttpSession session = request.getSession(false);
-        String keyword = (String)session.getAttribute("keyword");
-        
-        mv = mostrarList(mv, keyword);
-
-    	mv.setViewName("usuario/buscar");
-
-        return mv;
-   }
-
-	@RequestMapping(value="/{loginId}", method=RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("loginId") String loginId) {
+	@RequestMapping(value="/{userId}", method=RequestMethod.GET)
+    public ModelAndView showDetail(@PathVariable("userId") String userId) {
     	
     	ModelAndView mv = new ModelAndView();
 
-    	MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(loginId,1);
-    	
-    	
-    	AddUsuarioForm form = new AddUsuarioForm();
-        BeanUtils.copyProperties(entity, form);
-        form.setDepartmentname(entity.getDepartment().getName());
-        form.setHidId(entity.getId());
-    	mv.addObject("form", form);
-    	
-    	createDepartmentCombo(mv);
-    	mv.setViewName("usuario/add");
+    	MemberEntity entity = memberRepository.findByUserId(userId);
+    	mv.addObject("form", entity);
+     	
+    	mv.setViewName("user/detail");
 
 		return mv;
     }
- 
-	@RequestMapping(value="/dl", method=RequestMethod.POST)
-    public ModelAndView dl(String keyword) {
+
+    @RequestMapping(value="/back", method=RequestMethod.GET)
+    public ModelAndView backToSearch(HttpServletRequest request) {
     	
-		
-		ModelAndView mv = new ModelAndView(new ExcelBuilder());
+        ModelAndView mv = new ModelAndView();
+        
+        String keyword = (String)request.getSession().getAttribute("keyword");
+        mv = mostrarList(mv, keyword);
+        mv.addObject("keyword", keyword);
 
-        if (StringUtils.isNotEmpty(keyword)) {
-        	mv = mostrarList(mv, keyword);         
-        }
-         
-        mv.addObject("fileName", "POI" + ".xlsx");
-
+        mv.setViewName("user/search");
         return mv;
-    }
-    
-	@RequestMapping(value="/dl/{loginId}", method=RequestMethod.POST)
-//    public ModelAndView dlByLoginId(@PathVariable("loginId") String loginId) {
-    public ModelAndView dlByLoginId(@PathVariable("loginId") String loginId) {
+   }
+
+	@RequestMapping(value="delete", method=RequestMethod.POST)
+    public ModelAndView delete(@RequestParam("userId") String userId, HttpServletRequest request, Principal principal) {
     	
-    	ModelAndView mv = new ModelAndView(new ExcelBuilderUsuario(),"message", "test");
-
-    	MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(loginId,1);
-    	    	
-    	AddUsuarioForm form = new AddUsuarioForm();
-        BeanUtils.copyProperties(entity, form);
-        form.setDepartmentname(entity.getDepartment().getName());
-        form.setHidId(entity.getId());
-    	mv.addObject("form", form);
-    	
-    	createDepartmentCombo(mv);
-
-//        mv.addObject("fileName", "Usuario.txt");
-
-        return new ModelAndView(new ExcelBuilderUsuario(),"message", "test");
-    }
-    
-	
-
-	@RequestMapping(value="delete/{loginId}", method=RequestMethod.POST)
-    public ModelAndView delete(@PathVariable("loginId") String loginId, String keyword) {
-    	
-    	ModelAndView mv = new ModelAndView();
-
-    	MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(loginId,1);
+    	MemberEntity entity = memberRepository.findByUserId(userId);
     	entity.setIsDeleted(1);
-    	memberRepository.save(entity);
     	
-        mv = mostrarList(mv, keyword);
+    	Authentication authentication = (Authentication) principal;
+		MemberEntity user = (MemberEntity) authentication.getPrincipal();
+        
+    	memberService.updateMember(entity, user.getUserId());
     	
-    	mv.setViewName("usuario/buscar");
+    	return backToSearch(request);
    	
+    }
+
+	@RequestMapping(value="/edit", method=RequestMethod.POST)
+    public ModelAndView edit(@RequestParam("userId") String userId) {
+    	
+    	ModelAndView mv = new ModelAndView();
+    	UserEditForm form = new UserEditForm();
+
+    	if(!userId.equals("")) {
+
+    		MemberEntity entity = memberRepository.findByUserId(userId);
+        	BeanUtils.copyProperties(entity, form);
+        	form.setDepartmentId(entity.getDepartment().getId());
+        	form.setHidId(entity.getId());
+    	
+    	}
+    	
+    	mv.addObject("form", form);
+    	createDepartmentCombo(mv);
+
+    	mv.setViewName("user/edit");
+
 		return mv;
     }
-    
-    private ModelAndView mostrarList(ModelAndView mv, String keyword){
-        if (StringUtils.isNotEmpty(keyword)) {
-            List<MemberEntity> list = memberRepository.findUsers(keyword);
-            mv.addObject("list", list);
-            mv.addObject("keyword",keyword);
+
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+    public ModelAndView save(@ModelAttribute("form") @Valid UserEditForm form, BindingResult result, Principal principal) {
+    	
+        ModelAndView mv = new ModelAndView();
+
+        if (result.hasErrors()) {
+        
+        	createDepartmentCombo(mv);
+        	mv.setViewName("user/edit");
+        	return mv;
+
+        } else{
+
+        	Authentication authentication = (Authentication) principal;
+    		MemberEntity user = (MemberEntity) authentication.getPrincipal();
+
+            MemberEntity member = new MemberEntity();
+            BeanUtils.copyProperties(form, member);
+
+    		DepartmentEntity de = departmentRepository.findById(form.getDepartmentId());
+    		member.setDepartment(de);
+    		
+    		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+    		String passwordCrypto;    		
+
+        	if(form.getHidId() <= 0) {
+        	
+        		//insert
+        		member.setCreatedUserId(user.getUserId());
+        		member.setUpdatedUserId(user.getUserId());
+        		passwordCrypto = bcrypt.encode("99999");
+         		member.setPassword(passwordCrypto);
+        		member = memberRepository.save(member);
+        		
+            	mv.setViewName("user/search");
+    	        mv = mostrarList(mv, form.getUserId());
+        		
+        	} else {
+        		
+        		//update
+        		MemberEntity mActual = memberRepository.findByUserId(form.getUserId());
+        		member.setPassword(mActual.getPassword());
+        		memberService.updateMember(member, user.getUserId());
+        		return showDetail(form.getUserId());
+        	}
+	        
         }
+        
+        return mv;
+   }
+
+    private ModelAndView mostrarList(ModelAndView mv, String keyword){
+        List<MemberEntity> list = null;
+        
+        if (StringUtils.isNotEmpty(keyword)) {
+        
+        	list = memberRepository.findUsers(keyword);
+        
+        } else {
+        	
+        	list = memberRepository.findAll();
+        }
+        
+        list = list.stream()
+            	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
+        mv.addObject("list", list);
+        mv.addObject("keyword",keyword);
        
      	return mv;
     }
     
     private void createDepartmentCombo(ModelAndView mv) {
-    	List<DepartmentEntity> list = departmentRepository.findByIsDeletedOrderByDepartmentName(0);
+    	List<DepartmentEntity> list = departmentRepository.findAll(new Sort(Sort.Direction.ASC,"order")).stream()
+            	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
     	mv.addObject("departmentList", list);
 		
 	}

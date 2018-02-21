@@ -1,43 +1,46 @@
 package com.osg.purchase.form;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
 import com.osg.purchase.customValidation.LoginIdUnique;
+import com.osg.purchase.entity.DepartmentEntity;
 
 @LoginIdUnique(message="{err.msg.loginid.unique}")
-public class AddUsuarioForm {
+public class UserEditForm {
 
 	@NotNull
     @Size(min = 1, max = 255, message="{err.msg.size}")
-    private String loginId;
+    private String userId;
 	
-    private int hidId;
-
+	private int hidId;
+	
 	@NotNull
     @Size(min = 1, max = 255)
     private String username;
 
-	@NotNull
-    @Size(min = 1, max = 255)
-    private String password = "99999";
+    private String password;
 
     @Size(min = 1, max = 255, message="{err.msg.size}")
     @Email
-    private String mailAddress;
+    private String email;
 
 	@NotNull
-    @Size(min = 1, max = 255, message="{err.msg.size}")
+	@Min(value=1, message="{err.msg.requerido}")
+    private int departmentId;
+
     private String departmentname;
 
+	private DepartmentEntity departmentEntity = new DepartmentEntity();
 
-    public String getLoginId() {
-        return loginId;
+    public String getUserId() {
+        return userId;
     }
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getHidId() {
@@ -63,13 +66,21 @@ public class AddUsuarioForm {
         this.password = password;
     }
 
-   public String getMailAddress() {
-        return mailAddress;
+   public String getEmail() {
+        return email;
     }
 
-    public void setMailAddress(String mailAddress) {
-        this.mailAddress = mailAddress;
+    public void setEmail(String email) {
+        this.email = email;
     }
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+	    
     public String getDepartmentname() {
         return departmentname;
     }
@@ -77,16 +88,14 @@ public class AddUsuarioForm {
     public void setDepartmentname(String departmentname) {
         this.departmentname = departmentname;
     }
-	    
-//    /**
-//     * getter para validation
-//     */
-//    @AssertTrue(message="")
-//    public boolean isValidLoginId(){
-//    	if(StringUtils.isEmpty(this.hidLoginId)){
-//    		return true;
-//    	}else{
-//    		return true;
-//    	}
-//    }
+    
+    public DepartmentEntity getDepartment() {
+    	return this.departmentEntity;
+	}
+    	 
+	public void setDepartment(DepartmentEntity departmentEntity) {
+		this.departmentEntity = departmentEntity;
+	}
+
+
 }

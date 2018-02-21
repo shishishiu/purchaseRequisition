@@ -1,15 +1,21 @@
-function buscar(){
-	document.getElementById("buscarForm").submit();
+function searchUser(){
+	document.getElementById("searchForm").submit();
 }
 
-function deleteUser(loginid){
+function deleteUser(userId){
+	$("#userId").val(userId);
+	document.getElementById("searchForm").action="delete";
+	document.getElementById("searchForm").submit();
 	
-	document.getElementById("buscarForm").action="/admin/usuario/delete/"+loginid;
-	document.getElementById("buscarForm").submit();
-	
-}
-function dl(){
-	document.getElementById("buscarForm").action="/admin/usuario/dl";
-	document.getElementById("buscarForm").submit();
 }
 
+function clearCondition(){
+	$("#keyword").val("");
+
+}
+function edit(){
+	$("#userId").val("");
+	document.getElementById("searchForm").action="edit";
+	document.getElementById("searchForm").submit();
+	
+}

@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
-import com.osg.purchase.form.AddUsuarioForm;
+import com.osg.purchase.form.UserEditForm;
 
 public class ExcelBuilderUsuario extends AbstractXlsxView  {
 
@@ -38,7 +38,7 @@ public class ExcelBuilderUsuario extends AbstractXlsxView  {
 //	    c.setCellValue( "test" );
 			
 			
-	   	AddUsuarioForm fm = (AddUsuarioForm) model.get("form");
+	   	UserEditForm fm = (UserEditForm) model.get("form");
 	       	       
 //	    Sheet sheet = workbook.createSheet("Spring");
 
