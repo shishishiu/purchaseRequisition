@@ -28,12 +28,13 @@
 
 		    <div class="containerShadow">
 
+	         	<label th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="errMessage">Error</label>
+
 	        	<div class="item">
 			        <label class="label" th:utext="#{mstUser.userId}"></label>
 			        <div th:if="*{userId == null or userId == ''}">
 				        <input type="text" class="item" th:field="*{userId}" autofocus="autofocus" id="userId" name="userId" th:errorclass="errorField"/>
 				        <label th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" class="errMessage">error</label>
-				        <label th:if="${#fields.hasErrors('global')}" th:errors="*{global}" class="errMessage">loginId Error</label>
 			        </div>
 			        <div th:unless="*{userId == null or userId == ''}">
 				        <label class="item" th:text="*{userId}"></label>
