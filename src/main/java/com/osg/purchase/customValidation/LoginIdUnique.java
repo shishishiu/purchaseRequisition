@@ -15,5 +15,5 @@ public @interface LoginIdUnique {
     Class<? extends Payload>[] payload() default {};
 
     String fieldUserId() default "userId";
-    String fieldHidId() default "hidId";
+    String fieldId() default "id";
 }

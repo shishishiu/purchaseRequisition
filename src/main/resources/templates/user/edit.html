@@ -14,12 +14,12 @@
         <form th:action="@{save}" method="post" id="editForm" th:object="${form}" class="center">
 
         	<div>
-        		<div th:if="*{userId == null or userId == ''}">
+        		<div th:if="*{isNew}">
 	         		<a href="javascript:void(0)" th:href="@{back}" title="regresar">
 	        			<i class="material-icons">navigate_before</i>
 	        		</a>
         		</div>
-        		<div th:unless="*{userId == null or userId == ''}">
+        		<div th:unless="*{isNew}">
 	         		<a href="javascript:void(0)" th:href="@{{userId}(userId=*{userId})}" title="regresar">
 	        			<i class="material-icons">navigate_before</i>
 	        		</a>
@@ -32,11 +32,11 @@
 
 	        	<div class="item">
 			        <label class="label" th:utext="#{mstUser.userId}"></label>
-			        <div th:if="*{userId == null or userId == ''}">
+			        <div th:if="*{isNew}">
 				        <input type="text" class="item" th:field="*{userId}" autofocus="autofocus" id="userId" name="userId" th:errorclass="errorField"/>
 				        <label th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" class="errMessage">error</label>
 			        </div>
-			        <div th:unless="*{userId == null or userId == ''}">
+			        <div th:unless="*{isNew}">
 				        <label class="item" th:text="*{userId}"></label>
 			        </div>
 			    </div>
@@ -66,10 +66,11 @@
         	<div class="item">
 				<a href="javascript:void(0)" onclick="save()" title="save"><i class="material-icons">done_all</i></a>
         	</div>
-			<div th:if="*{userId != null and userId != ''}">
+			<div th:if="*{isNew == false}">
         		<input type="hidden" name="userId" th:field="*{userId}"/>
-	        	<input type="hidden" name="hidId" th:value="*{hidId}" />
+	        	<input type="hidden" name="id" th:value="*{id}" />
         	</div>
+        	<input type="hidden" name="isNew" th:value="*{isNew}" />
         </form>
 
 	

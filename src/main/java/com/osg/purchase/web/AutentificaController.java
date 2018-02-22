@@ -1,5 +1,6 @@
 package com.osg.purchase.web;
 
+import java.net.URI;
 import java.security.Principal;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.osg.purchase.entity.MemberEntity;
 import com.osg.purchase.form.AutentificaForm;
@@ -31,8 +33,10 @@ public class AutentificaController {
 	MessageSource msg;
 	
     @RequestMapping("/")
-    public String index() {
-        return "home";
+    public String index(UriComponentsBuilder builder) {
+
+        URI location = builder.path("/purchase/search").build().toUri();
+        return "redirect:" + location.toString();
     }
 
     @GetMapping("/login")

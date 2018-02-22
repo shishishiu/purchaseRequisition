@@ -24,7 +24,7 @@ public class MemberServiceImpl implements UserDetailsService
         	throw new UsernameNotFoundException("Username is empty");
         }
 
-        MemberEntity memberEntity = memberRepository.findByUserId(username);
+        MemberEntity memberEntity = memberRepository.findByUserIdAndIsDeleted(username, 0);
         if (memberEntity == null || memberEntity.getIsDeleted() == 1 )
         {
         	throw new UsernameNotFoundException("User not found: " + username);
@@ -36,7 +36,7 @@ public class MemberServiceImpl implements UserDetailsService
 	public void updateMember(MemberEntity entity, String loggedInUserId) {
 				
     	memberRepository.updateMember(entity.getPassword(), entity.getUsername(), 
-    			entity.getDepartment().getId(), entity.getEmail(), entity.getIsDeleted(), loggedInUserId, entity.getUserId());
+    			entity.getDepartment().getId(), entity.getEmail(), entity.getIsDeleted(), loggedInUserId, entity.getId());
 
 		
 	}

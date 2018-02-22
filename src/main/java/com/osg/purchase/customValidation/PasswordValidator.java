@@ -28,7 +28,7 @@ public class PasswordValidator implements ConstraintValidator<Password, Password
 		
 		if(password!=null && !password.equals("")) {
 			
-			MemberEntity entity = memberRepository.findByUserId(userId);
+			MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(userId, 0);
 			
     		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
     		

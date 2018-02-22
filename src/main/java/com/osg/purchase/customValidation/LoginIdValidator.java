@@ -7,9 +7,10 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.osg.purchase.entity.MemberEntity;
+import com.osg.purchase.form.UserEditForm;
 import com.osg.purchase.repository.MemberRepository;
 
-public class LoginIdValidator implements ConstraintValidator<LoginIdUnique,Object> {
+public class LoginIdValidator implements ConstraintValidator<LoginIdUnique,UserEditForm> {
 
 	@Autowired
 	MemberRepository memberRepository;
@@ -19,18 +20,17 @@ public class LoginIdValidator implements ConstraintValidator<LoginIdUnique,Objec
 	
 	@Override
 	public void initialize(LoginIdUnique annotation) {
-		this.hidId = annotation.fieldHidId();
+		this.hidId = annotation.fieldId();
         this.userId = annotation.fieldUserId();
 	}
 
 	@Override
-	public boolean isValid(Object value, ConstraintValidatorContext context) {
+	public boolean isValid(UserEditForm value, ConstraintValidatorContext context) {
 		
-		BeanWrapper beanWrapper = new BeanWrapperImpl(value);
-		int hidId = (int)beanWrapper.getPropertyValue(this.hidId);
-		String userId = (String)beanWrapper.getPropertyValue(this.userId);
+		int hidId = value.getId();
+		String userId = value.getUserId();
 
-		MemberEntity entity = memberRepository.findByUserId(userId);
+		MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(userId,0);
 		
 
 		if(entity == null){

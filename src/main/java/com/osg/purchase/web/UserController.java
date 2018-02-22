@@ -47,9 +47,7 @@ public class UserController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("user/search");
 
-        List<MemberEntity> list = memberRepository.findAll();
-
-        mv.addObject("list", list);   	
+        mv = mostrarList(mv,"");   	
     	
         return mv;
     }
@@ -72,7 +70,7 @@ public class UserController {
     	
     	ModelAndView mv = new ModelAndView();
 
-    	MemberEntity entity = memberRepository.findByUserId(userId);
+    	MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(userId, 0);
     	mv.addObject("form", entity);
      	
     	mv.setViewName("user/detail");
@@ -96,7 +94,7 @@ public class UserController {
 	@RequestMapping(value="delete", method=RequestMethod.POST)
     public ModelAndView delete(@RequestParam("userId") String userId, HttpServletRequest request, Principal principal) {
     	
-    	MemberEntity entity = memberRepository.findByUserId(userId);
+    	MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(userId, 0);
     	entity.setIsDeleted(1);
     	
     	Authentication authentication = (Authentication) principal;
@@ -113,13 +111,15 @@ public class UserController {
     	
     	ModelAndView mv = new ModelAndView();
     	UserEditForm form = new UserEditForm();
+    	form.setIsNew(true);
 
     	if(!userId.equals("")) {
 
-    		MemberEntity entity = memberRepository.findByUserId(userId);
+    		MemberEntity entity = memberRepository.findByUserIdAndIsDeleted(userId, 0);
         	BeanUtils.copyProperties(entity, form);
         	form.setDepartmentId(entity.getDepartment().getId());
-        	form.setHidId(entity.getId());
+        	form.setId(entity.getId());
+        	form.setIsNew(false);
     	
     	}
     	
@@ -156,7 +156,7 @@ public class UserController {
     		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
     		String passwordCrypto;    		
 
-        	if(form.getHidId() <= 0) {
+        	if(form.getId() <= 0) {
         	
         		//insert
         		member.setCreatedUserId(user.getUserId());
@@ -171,7 +171,7 @@ public class UserController {
         	} else {
         		
         		//update
-        		MemberEntity mActual = memberRepository.findByUserId(form.getUserId());
+        		MemberEntity mActual = memberRepository.findByUserIdAndIsDeleted(form.getUserId(), 0);
         		member.setPassword(mActual.getPassword());
         		memberService.updateMember(member, user.getUserId());
         		return showDetail(form.getUserId());

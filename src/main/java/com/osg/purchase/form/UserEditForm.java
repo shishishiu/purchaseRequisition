@@ -16,7 +16,8 @@ public class UserEditForm {
     @Size(min = 1, max = 255, message="{err.msg.size}")
     private String userId;
 	
-	private int hidId;
+	private int id;
+	private boolean isNew;
 	
 	@NotNull
     @Size(min = 1, max = 255)
@@ -43,11 +44,18 @@ public class UserEditForm {
         this.userId = userId;
     }
 
-    public int getHidId() {
-        return hidId;
+    public int getId() {
+        return id;
     }
-    public void setHidId(int hidId) {
-        this.hidId = hidId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean getIsNew() {
+        return isNew;
+    }
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
     }
 
     public String getUsername() {
