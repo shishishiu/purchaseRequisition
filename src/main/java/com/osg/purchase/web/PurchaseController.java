@@ -46,7 +46,6 @@ import com.osg.purchase.service.PurchaseService;
 
 @Controller
 @RequestMapping("purchase")
-//@SessionAttributes(names={"sessionPurchaseCriteriaForm","sessionPurchaseHeaderEditForm"})
 @SessionAttributes(names={"sessionPurchaseCriteriaForm"})
 public class PurchaseController {
 
