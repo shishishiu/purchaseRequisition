@@ -60,18 +60,22 @@ public class PurchaseRepositoryImpl implements CustomizedPurchaseRepository {
             andConditions.add("p.isDelivered = :isDelivered");
             bindParameters.put("isDelivered", Integer.parseInt(criteria.getCheckIsDelivered()[0]));
         }
+        if (criteria.getProductName()!= null && !criteria.getProductName().equals("")) {
+            andConditions.add("pi.productName like :productName");
+            bindParameters.put("productName", "%" + criteria.getProductName() + "%");
+        }
 
         final StringBuilder queryString = new StringBuilder();
-        queryString.append("SELECT p FROM table_purchases p WHERE p.isDeleted = 0");
+        queryString.append("SELECT p FROM table_purchases p LEFT JOIN p.purchaseItemList pi");
+        queryString.append(" WHERE (p.isDeleted = 0 AND pi.isDeleted = 0) AND p.purchaseId = pi.purchaseId ");
         
         Iterator<String> andConditionsIt = andConditions.iterator();
-//        if (andConditionsIt.hasNext()) {
-//            queryString.append(" WHERE ").append(andConditionsIt.next());
-//        }
+
         while (andConditionsIt.hasNext()) {
             queryString.append(" AND ").append(andConditionsIt.next());
         }
 
+        queryString.append(" GROUP BY p.purchaseId, p.userId, p.applicatedAt, p.deliveryDate, p.isDomestic, p.company, p.machineNo");
         queryString.append(" ORDER BY p.isDelivered, p.applicatedAt");
 
         final TypedQuery<PurchaseEntity> findQuery = entityManager.createQuery(

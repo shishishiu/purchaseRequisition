@@ -8,6 +8,20 @@ $(function(){
 			  searchPurchase();
 		  }
 	})
+	
+	$( "a[id^='pid']" ).mouseover(function() {
+		var ids = $(this).prop("id").split("_");
+		var pid = ids[1];
+		$("#detail_"+pid).prop("style", "display:inline");
+		
+		
+	}).mouseout(function(){
+		var ids = $(this).prop("id").split("_");
+		var pid = ids[1];
+		$("#detail_"+pid).prop("style", "display:none");
+	  
+	});
+	
 }) 
 
 function setDeliveryDate(){

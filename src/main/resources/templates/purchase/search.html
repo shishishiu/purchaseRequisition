@@ -23,6 +23,9 @@
 		        <label class="label" th:utext="#{mstPurchases.purchaseId}"></label>
 		        <input type="text" name="pId" id="pId" th:value="*{pId}" class="condition" autofocus="autofocus"/>
 
+		        <label class="label" th:utext="#{mstPurchasesItems.productName}"></label>
+		        <input type="text" name="productName" id="productName" th:value="*{productName}" class="condition"/>
+
 		        <label class="label" th:utext="#{mstUser.userId}"></label>
 		        <input type="text" name="solicitanteId" id="solicitanteId" th:value="*{solicitanteId}" class="condition"/>
 
@@ -78,7 +81,7 @@
 	            <tr th:each="item,iterStat : ${list}" 
 	            th:with="rowcolor =${item.styleColor}"
 	            th:class="${rowcolor}">
-	              <td class="textCenter"><a class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
+	              <td class="textCenter"><a th:id="pid_ + ${item.purchaseId}" class="btn btn-default" href="/purchase/" th:href="@{/purchase/{purchaseId}(purchaseId=${item.purchaseId})}" th:text="${iterStat.count}">1</a></td>
 	              <td class="textCenter" th:text="${item.purchaseId}"></td>
 	              <td th:text="${item.member}? ${item.userId} + ' ' + ${item.member.username}: ${item.userId}"></td>
 	              <td class="textCenter" th:text="${item.machineNo}"></td>
@@ -88,7 +91,32 @@
 	              <td class="textCenter" th:text="${item.companyValue}"></td>
 	              <td class="textCenter" th:if="${item.isDelivered == 1}" title="Ya se entregó"><i class="material-icons">done</i></td>
 	              <td class="textCenter" th:if="${item.isDelivered == 0}"></td>
-	              
+	              <td class="detail" th:id="detail_ + ${item.purchaseId}">
+	              	<table>
+	              		<tr>
+				            <th th:utext="#{mstPurchasesItems.productName}"></th>
+				            <th th:utext="#{mstPurchasesItems.note}"></th>
+				            <th th:utext="#{mstPurchasesItems.brand}"></th>
+	        				<th th:utext="#{mstPurchasesItems.quantity}"></th>
+	        				<th th:utext="#{mstPurchasesItems.unit}"></th>
+				            <th th:utext="#{mstPurchasesItems.unitPrice}"></th>
+				            <th th:utext="#{mstPurchasesItems.totalPrice}"></th>
+				            <th th:utext="#{mstPurchasesItems.currency}"></th>
+				            <th th:utext="#{mstPurchasesItems.applicationArea}"></th>
+				        </tr>
+		              	<tr th:each="item2,iterStat2 : ${item.purchaseItemList}">
+	              			<td th:text="${item2.productName}"></td>
+		              		<td th:text="${item2.note}"></td>
+		              		<td th:text="${item2.brand}"></td>
+		              		<td th:text="${item2.quantity}"></td>
+		              		<td th:text="${item2.unit}"></td>
+		              		<td th:text="${item2.unitPrice}"></td>
+		              		<td th:text="${item2.totalPrice}"></td>
+		              		<td th:text="${item2.currency}"></td>
+		              		<td th:text="${item2.applicationArea}"></td>
+	              		</tr>
+	              	</table>
+	              </td>
 	            </tr>
 	          </tbody>
 	        </table>

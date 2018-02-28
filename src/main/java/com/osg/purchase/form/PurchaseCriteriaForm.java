@@ -2,6 +2,8 @@ package com.osg.purchase.form;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+
 
 public class PurchaseCriteriaForm implements Serializable{
 
@@ -14,6 +16,7 @@ public class PurchaseCriteriaForm implements Serializable{
     private String applicatedAtTo;
     private String deliveryDateTo;
     private String[] checkIsDelivered = {"0"};
+    private String productName;
     
     public void setPId(String purchaseId) {
         this.purchaseId = purchaseId;
@@ -60,6 +63,13 @@ public class PurchaseCriteriaForm implements Serializable{
 	public String[] getCheckIsDelivered(){
 		return this.checkIsDelivered;
 	}
+    public String getProductName()
+   {
+       return this.productName;
+   }
+    public void setProductName(String productName) {
+	   this.productName = productName;
+   }
 
 
 }

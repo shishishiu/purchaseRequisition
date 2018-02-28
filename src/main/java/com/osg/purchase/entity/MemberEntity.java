@@ -34,8 +34,8 @@ public class MemberEntity implements UserDetails
 	@JoinColumn(name = "departmentId", referencedColumnName="id")
 	private DepartmentEntity departmentEntity;
 
-    @OneToMany(mappedBy = "member")
-    private List<PurchaseEntity> purchaseEntity;
+//    @OneToMany(mappedBy = "member")
+//    private List<PurchaseEntity> purchaseEntity;
 
     private static final long serialVersionUID = 1667698003975566301L;
 
