@@ -104,7 +104,7 @@
 				            <th th:utext="#{mstPurchasesItems.currency}"></th>
 				            <th th:utext="#{mstPurchasesItems.applicationArea}"></th>
 				        </tr>
-		              	<tr th:each="item2,iterStat2 : ${item.purchaseItemList}">
+		              	<tr th:each="item2,iterStat2 : ${item.purchaseItemList}" th:if="${item2.isDeleted==0}">
 	              			<td th:text="${item2.productName}"></td>
 		              		<td th:text="${item2.note}"></td>
 		              		<td th:text="${item2.brand}"></td>

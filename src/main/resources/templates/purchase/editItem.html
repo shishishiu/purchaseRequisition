@@ -87,6 +87,17 @@
          	
         	<input type="hidden" name="purchaseItemId" id="purchaseItemId" th:field="*{purchaseItemId}"/>
         	<input type="hidden" name="purchaseId" id="purchaseId" th:field="*{purchaseId}"/>
+        	
+        	<div th:object="${headerForm}" th:if="${form.purchaseId le 0}">
+	        	<input type="hidden" name="userId" th:field="*{userId}"/>
+	        	<input type="hidden" name="applicatedAt" th:field="*{applicatedAt}"/>
+	        	<input type="hidden" name="deliveryDate" th:field="*{deliveryDate}"/>
+	        	<input type="hidden" name="isDomestic" th:field="*{isDomestic}"/>
+	        	<input type="hidden" name="company" th:field="*{company}"/>
+	        	<input type="hidden" name="machineNo" th:field="*{machineNo}"/>
+        	</div>
+        	
+        	
         </form>
 
 	</div>

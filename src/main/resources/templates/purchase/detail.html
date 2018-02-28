@@ -86,7 +86,7 @@
 			            <th th:utext="#{mstPurchasesItems.applicationArea}"></th>
  			            <th></th>
         			</tr>
-					<tr th:each="item,iterStat : ${itemList}" class="data">
+					<tr th:each="item,iterStat : ${form.purchaseItemList}" class="data" th:if="${item.isDeleted==0}">
 						<td class="textCenter" th:text="${iterStat.count}"></td>
 	              		<td class="textCenter" th:text="${item.productName}"></td>
 	              		<td class="textCenter" th:text="${item.note}"></td>

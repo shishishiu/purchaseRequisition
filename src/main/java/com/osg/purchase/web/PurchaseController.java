@@ -46,7 +46,8 @@ import com.osg.purchase.service.PurchaseService;
 
 @Controller
 @RequestMapping("purchase")
-@SessionAttributes(names={"sessionPurchaseCriteriaForm","sessionPurchaseHeaderEditForm"})
+//@SessionAttributes(names={"sessionPurchaseCriteriaForm","sessionPurchaseHeaderEditForm"})
+@SessionAttributes(names={"sessionPurchaseCriteriaForm"})
 public class PurchaseController {
 
 	@Autowired
@@ -57,7 +58,7 @@ public class PurchaseController {
 	PurchaseService purchaseService;
 	@Autowired
 	PurchaseItemService purchaseItemService;
-	
+
 	/***
 	 * save search condition in the session
 	 * @return
@@ -66,14 +67,14 @@ public class PurchaseController {
     public PurchaseCriteriaForm setSessionPurchaseCriteriaForm(){
         return new PurchaseCriteriaForm();
     }
-    /***
-     * save header in the session when create new header and new item
-     * @return
-     */
-    @ModelAttribute("sessionPurchaseHeaderEditForm")
-    public PurchaseHeaderEditForm setSessionPurchaseHeaderEditForm(){
-        return new PurchaseHeaderEditForm();
-    }
+//    /***
+//     * save header in the session when create new header and new item
+//     * @return
+//     */
+//    @ModelAttribute("sessionPurchaseHeaderEditForm")
+//    public PurchaseHeaderEditForm setSessionPurchaseHeaderEditForm(){
+//        return new PurchaseHeaderEditForm();
+//    }
 
     final static Map<String, String> IS_DELIVERED_ITEMS = 
     		Collections.unmodifiableMap(new LinkedHashMap<String, String>() {
@@ -84,22 +85,26 @@ public class PurchaseController {
     	  });
 
     @RequestMapping(value="/search", method=RequestMethod.GET)
-    public ModelAndView index(SessionStatus sessionStatus, @ModelAttribute MemberEntity loggedInUser) {
-		
-		sessionStatus.setComplete();
+    public ModelAndView index(SessionStatus sessionStatus, @ModelAttribute MemberEntity loggedInUser, Model model) {
 		
 		PurchaseCriteriaForm form = new PurchaseCriteriaForm();
 		form.setSolicitanteId(loggedInUser.getUserId());
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("isDeliveredItems", IS_DELIVERED_ITEMS);
-		mv.addObject("purchaseCriteriaForm", form);
-		mv.setViewName("purchase/search");
-
-        List<PurchaseEntity> list = searchPurchase(form);
-        
-        mv.addObject("list", list);
-
-		 return mv;
+		
+		return search(form, null, model);
+		
+//		ModelAndView mv = new ModelAndView();
+//		mv.addObject("isDeliveredItems", IS_DELIVERED_ITEMS);
+//		mv.addObject("purchaseCriteriaForm", form);
+//		mv.setViewName("purchase/search");
+//
+//        List<PurchaseEntity> list = searchPurchase(form);
+//        
+//        mv.addObject("list", list);
+//
+//        //add session
+//        model.addAttribute("sessionPurchaseCriteriaForm", form);        
+//
+//		 return mv;
     }
 
 	/***
@@ -116,7 +121,7 @@ public class PurchaseController {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("purchase/search");
 
-        if (result.hasErrors()) {
+        if (result != null && result.hasErrors()) {
         	return mv;
         		
         }
@@ -127,7 +132,8 @@ public class PurchaseController {
         List<PurchaseEntity> list = searchPurchase(form);
         
 		mv.addObject("isDeliveredItems", IS_DELIVERED_ITEMS);
-       mv.addObject("list", list);
+		mv.addObject("list", list);
+		mv.addObject("purchaseCriteriaForm", form);
           
         return mv;
     }
@@ -150,16 +156,20 @@ public class PurchaseController {
 
 	@RequestMapping(value="/eheader", method=RequestMethod.POST)
     public ModelAndView editHeader(@RequestParam("purchaseId") int purchaseId, @ModelAttribute MemberEntity loggedInUser,
-    		@ModelAttribute("sessionPurchaseHeaderEditForm")PurchaseHeaderEditForm purchaseHeaderEditForm) {
+//    		@ModelAttribute("sessionPurchaseHeaderEditForm")PurchaseHeaderEditForm purchaseHeaderEditForm,
+    		@ModelAttribute("headerForm") PurchaseHeaderEditForm headerForm) {
     	
     	ModelAndView mv = new ModelAndView();
     	PurchaseHeaderEditForm form = new PurchaseHeaderEditForm();
 
     	if(purchaseId == 0) {
     		
-    		if(purchaseHeaderEditForm != null) {
+//    		if(purchaseHeaderEditForm != null) {
+   			if(headerForm != null) {
     			
-    			BeanUtils.copyProperties(purchaseHeaderEditForm, form);
+//    			BeanUtils.copyProperties(purchaseHeaderEditForm, form);
+   				BeanUtils.copyProperties(headerForm, form);
+   				
     			
     		}
     		
@@ -201,8 +211,8 @@ public class PurchaseController {
         	if(purchaseId<=0) {
             	
                 //add session
-        		model.addAttribute("sessionPurchaseHeaderEditForm", form);
-        		return editItem(purchaseId, 0);
+//        		model.addAttribute("sessionPurchaseHeaderEditForm", form);
+        		return editItem(purchaseId, 0, form);
         		        		
         	}else {
             	PurchaseEntity entity = new PurchaseEntity();
@@ -220,7 +230,7 @@ public class PurchaseController {
 
 	@RequestMapping(value="/eitem", method=RequestMethod.POST)
     public ModelAndView editItem(@RequestParam("purchaseId") int purchaseId, 
-    		@RequestParam("purchaseItemId")int purchaseItemId) {
+    		@RequestParam("purchaseItemId")int purchaseItemId, PurchaseHeaderEditForm headerForm) {
     	
     	ModelAndView mv = new ModelAndView();
 	   	PurchaseItemEditForm form = new PurchaseItemEditForm();
@@ -228,6 +238,7 @@ public class PurchaseController {
     	if(purchaseItemId <= 0) {
 
 		   	form.setPurchaseId(purchaseId);
+		   	mv.addObject("headerForm", headerForm);
 
     	} else {
 
@@ -249,7 +260,8 @@ public class PurchaseController {
 	@RequestMapping(value= {"/saveItem", "eheader/saveItem"}, method=RequestMethod.POST)
     public ModelAndView saveItem(@ModelAttribute("form") @Valid PurchaseItemEditForm form, 
     		BindingResult result, @ModelAttribute MemberEntity loggedInUser, 
-    		@ModelAttribute("sessionPurchaseHeaderEditForm")PurchaseHeaderEditForm purchaseHeaderEditForm,
+//    		@ModelAttribute("sessionPurchaseHeaderEditForm")PurchaseHeaderEditForm purchaseHeaderEditForm,
+    		@ModelAttribute("headerForm") PurchaseHeaderEditForm headerForm,
     		Model model, SessionStatus sessionStatus) {
     	
         ModelAndView mv = new ModelAndView();
@@ -267,10 +279,10 @@ public class PurchaseController {
         	BeanUtils.copyProperties(form, entity);
 
         	
-        	if(purchaseHeaderEditForm.getPurchaseId()<=0) {
+        	if(headerForm.getPurchaseId()<=0) {
         		//register new Header
             	PurchaseEntity pentity = new PurchaseEntity();
-            	BeanUtils.copyProperties(purchaseHeaderEditForm, pentity);
+            	BeanUtils.copyProperties(headerForm, pentity);
             	
             	pentity.setCreatedUserId(loggedInUser.getUserId());
             	pentity.setUpdatedUserId(loggedInUser.getUserId());
@@ -293,12 +305,11 @@ public class PurchaseController {
 
         	}
             
-            if(purchaseHeaderEditForm.getPurchaseId()<=0) {
+            if(headerForm.getPurchaseId()<=0) {
             	
 	            PurchaseCriteriaForm sform = new PurchaseCriteriaForm();
 	            sform.setPId(Integer.toString(entity.getPurchaseId()));
 	            mv.setViewName("purchase/search");
-	            sessionStatus.setComplete();
 		        //add session
 		        model.addAttribute("sessionPurchaseCriteriaForm", sform);        
 	
@@ -366,7 +377,7 @@ public class PurchaseController {
         mv.addObject("list", list);
 		mv.addObject("isDeliveredItems", IS_DELIVERED_ITEMS);
         mv.setViewName("purchase/search");
-        sessionStatus.setComplete();
+//        sessionStatus.setComplete();
 
         return mv;
    }
@@ -405,8 +416,7 @@ public class PurchaseController {
 
 	@RequestMapping(value="/saveDeliverdDate", method=RequestMethod.POST)
     public ModelAndView saveDeliverdDate(@ModelAttribute("dForm") @Valid PurchaseHeaderDeliveredDateForm form, BindingResult result,
-    		@RequestParam("purchaseId") int purchaseId, 
-    		@RequestParam("deliveredDate") String deliveredDate, @ModelAttribute MemberEntity loggedInUser) {
+    		@RequestParam("purchaseId") int purchaseId,	@ModelAttribute MemberEntity loggedInUser) {
 		
     	PurchaseEntity entity = purchaseRepository.findByPurchaseId(purchaseId);    	
       
@@ -417,17 +427,14 @@ public class PurchaseController {
 
         	mv.addObject("form", entity);
         	 
-           	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
-        	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
-        	mv.addObject("itemList", list);
         	mv.addObject("loggedinUser", loggedInUser.getUserId());
 
         	return mv;
         		
         } else{
 
-	    	entity.setDeliveredDate(deliveredDate);
-	    	entity.setIsDelivered(1);
+	    	entity.setDeliveredDate(form.getDeliveredDate());
+	    	entity.setIsDelivered(form.getIsDelivered());
 	    	purchaseService.updatePurchaseHeader(entity, loggedInUser.getUserId());
 
         	return showDetail(purchaseId, loggedInUser);
@@ -450,9 +457,9 @@ public class PurchaseController {
     	
     	mv.addObject("form", entity);
  
-       	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
-    	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
-    	mv.addObject("itemList", list);
+//       	List<PurchaseItemEntity> list = entity.getPurchaseItemList().stream()
+//    	.filter(p -> p.getIsDeleted()==0).collect(Collectors.toList());
+//    	mv.addObject("itemList", list);
     	
     	if(entity.getIsDelivered()==0) {
     		mv.addObject("dForm",new PurchaseHeaderDeliveredDateForm());

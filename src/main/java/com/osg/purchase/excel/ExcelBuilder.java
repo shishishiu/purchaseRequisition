@@ -287,7 +287,7 @@ public class ExcelBuilder extends AbstractXlsxView  {
 
 		    purchaseItem.createCell(colNoteFrom).setCellValue(ientity.getNote());
 
-		    purchaseItem.createCell(colApplicationAreaFrom).setCellValue(ientity.getBrand());
+		    purchaseItem.createCell(colApplicationAreaFrom).setCellValue(ientity.getApplicationArea());
 		    purchaseItem.getCell(colApplicationAreaFrom).setCellStyle(styleItem);
 
 		    purchaseItem.createCell(colUnitPriceFrom).setCellValue(ientity.getUnitPrice());
